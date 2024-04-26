@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class BusDto {	
-	private int butNo;
+	private int busId;
+	private int busNum;
 	
 	// 테스트 생성파일
+	//테스트 222
 }
