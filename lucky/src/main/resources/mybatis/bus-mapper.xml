@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    
+<mapper namespace="bus">
+	
+	<select id="sequence" resultType="int">
+		select bus_seq.nextval from dual
+	</select>
+	
+	<insert id="insert">
+		insert into bus(
+			bus_no, bus_num, bus_seat, bus_status, driver_no, 
+			bus_model, grade_type, seat_no
+		)
+		values(
+			#{busNo}, #{busNum}, #{busSeat}, #{busStatus}, #{driverNo}, 
+			#{busModel}, #{gradeType}, #{seatNo}
+		)
+	</insert>
+	
+	<select id="list" resultType="BusDto">
+		select * from bus order by bus_no asc
+	</select>
+	
+	<select id="find" resultType="BusDto">
+		select * from bus where bus_no = #{busNo}
+	</select>
+	
+	<update id="editAll">
+		update bus set
+			bus_num = #{busNum}
+			bus_seat = #{busSeat}
+			bus_status = #{busStatus}
+			driver_no = #{driverNo}
+			bus_model = #{busModel}
+			grade_type = #{gradeType}
+			seat_no = #{seatNo}
+		where bus_no = #{busNo}
+	</update>
+	
+	<update id="edit">
+		update bus
+		<set>
+			<if test="busNum != null">bus_num = #{busNum},</if>
+			<if test="busSeat > 0">bus_seat = #{busSeat},</if>
+			<if test="busStatus != null">bus_status = #{busStatus},</if>
+			<if test="driverNo != null">driver_no = #{driverNo},</if>
+			<if test="busModel != null">bus_model = #{busModel},</if>
+			<if test="gradeType != null">grade_type = #{gradeType},</if>
+			<if test="seatNo != null">seat_no = #{seatNo}</if>
+		</set>
+		where bus_no = #{busNo}
+	</update>
+	
+	<delete id="delete">
+		delete bus where bus_no = #{busNo}
+	</delete>
+	
+</mapper>
