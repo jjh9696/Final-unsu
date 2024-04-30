@@ -5,10 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class TerminalDto {
-	private int terminalId;
-	private String terminalName;
-	private String terminalRegion;
-
+	private int terminalId; //터미널 아이디
+	private String terminalName; //터미널 이름
+	private String terminalRegion; //터미널 지역
 }
