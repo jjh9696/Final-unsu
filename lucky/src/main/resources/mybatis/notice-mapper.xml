@@ -56,6 +56,18 @@
 		delete notice where notice_no = #{noticeNo}
 	</delete>
 	
+	<!-- 조회수 증가 -->
+	<!--
+		String sql = "update notice " + 
+					"set notice_vcount = notice_vcount + 1 " +
+					"where notice_no = ?";
+		Object[] data = { noticeNo };
+	  -->
+	 <update id="updateNoticeViewCount" parameterType="int">
+		update notice
+	    SET notice_view_count = notice_vcount + 1
+	    WHERE notice_no = #{noticeNo}	 
+	 </update>
 	
 	
 </mapper>

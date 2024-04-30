@@ -39,5 +39,11 @@ public class NoticeDao {
 	public boolean delete(int noticeNo) {
 		return sqlSession.delete("notice.delete", noticeNo) > 0;
 	}
+	//조회수 증가
+	public boolean updateNoticeViewCount(int noticeNo) {
+		return sqlSession.update(
+				"notice.updateNoticeViewCount", noticeNo) > 0;
+	}
+	
 	
 }
