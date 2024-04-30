@@ -13,6 +13,5 @@ public class BusDto {
 	private String busStatus; //차량 상태
 	private int driverNo; //기사 번호
 	private String busModel; //버스 모델명
-//	private String gradeType; //버스 유형
-//	private int seatNo; //좌석 번호
+	private String gradeType; //버스 유형
 }

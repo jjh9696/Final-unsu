@@ -13,12 +13,12 @@
 	
 	<insert id="insert">
 		insert into route(
-			route_no, route_name, route_time, route_km, route_pay,
+			route_no, route_time, route_km, route_pay,
 			route_start_time, route_end_time, route_start, route_end,
 			bus_no, terminal_id
 		)
 		values(
-			#{routeNo}, #{routeName}, #{routeTime}, #{routeKm}, #{routePay},
+			#{routeNo}, #{routeTime}, #{routeKm}, #{routePay},
 			#{routeStartTime}, #{routeEndTime}, #{routeStart}, #{routeEnd},
 			#{busNo},  #{terminalId}
 		)
@@ -34,7 +34,6 @@
 	
 	<update id="editAll">
 		update route set
-			route_name = #{routeName},
 			route_time = #{routeTime},
 			route_km = #{routeKm},
 			route_pay = #{routePay},
@@ -50,7 +49,6 @@
 	<update id="edit">
 		update route
 		<set>
-			<if test="routeName != null">route_name = #{routeName},</if>
 			<if test="routeTime != null">route_time = #{routeTime},</if>
 			<if test="routeKm > 0">route_km = #{routeKm},</if>
 			<if test="routePay > 0">route_pay = #{routePay},</if>
