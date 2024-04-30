@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="route">
+
+	<select id="sequence" resultType="int">
+		select route_seq.nextval from dual
+	</select>
+	
+	<insert id="insert">
+		insert into route(
+			route_no, route_name, route_time, route_km, route_pay,
+			route_start_time, route_end_time, route_start, route_end,
+			bus_no, terminal_id
+		)
+		values(
+			#{routeNo}, #{routeName}, #{routeTime}, #{routeKm}, #{routePay},
+			#{routeStartTime}, #{routeEndTime}, #{routeStart}, #{routeEnd},
+			#{busNo},  #{terminalId}
+		)
+	</insert>
+	
+	<select id="list" resultType="RouteDto">
+		select * from route order by route_no asc
+	</select>
+	
+	<select id="find" resultType="RouteDto">
+		select * from route where route_no = #{routeNo}
+	</select>
+	
+	<update id="editAll">
+		update route set
+			route_name = #{routeName},
+			route_time = #{routeTime},
+			route_km = #{routeKm},
+			route_pay = #{routePay},
+			route_start_time = #{routeStartTime},
+			route_end_time = #{routeEndTime},
+			route_start = #{routeStart},
+			route_end = #{routeEnd},
+			bus_no = #{busNo},
+			 terminal_id = #{terminalId}
+		where route_no = #{routeNo}
+	</update>
+	
+	<update id="edit">
+		update route
+		<set>
+			<if test="routeName != null">route_name = #{routeName},</if>
+			<if test="routeTime != null">route_time = #{routeTime},</if>
+			<if test="routeKm > 0">route_km = #{routeKm},</if>
+			<if test="routePay > 0">route_pay = #{routePay},</if>
+			<if test="routeStartTime != null">route_start_time = #{routeStartTime},</if>
+			<if test="routeEndTime != null">route_end_time = #{routeEndTime},</if>
+			<if test="routeStart != null">route_start = #{routeStart},</if>		
+			<if test="routeEnd != null">route_end = #{routeEnd},</if>
+			<if test="busNo != null">bus_no = #{busNo},</if>
+			 <if test="terminalId != null">terminal_id = #{terminalId}</if>
+		</set>
+		where route_no = #{routeNo}
+	</update>
+	
+	<delete id="delete">
+		delete route where route_no = #{routeNo}
+	</delete>
+
+</mapper>

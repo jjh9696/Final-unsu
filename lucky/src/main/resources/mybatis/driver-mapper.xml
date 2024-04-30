@@ -43,7 +43,7 @@
 		<set>
 			<if test="driverName != null">driver_name = #{driverName},</if>
 			<if test="driverContact != null">driver_contact = #{driverContact},</if>
-			<if test="driverAge > 0">driver_age = #{driverAge}</if>
+			<if test="driverAge > 0">driver_age = #{driverAge},</if>
 			<if test="driverLicense != null">driver_license = #{driverLicense},</if>
 			<if test="driverDate != null">driver_date = #{driverDate}</if>
 		</set>

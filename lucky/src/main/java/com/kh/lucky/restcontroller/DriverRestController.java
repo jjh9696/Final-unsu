@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.lucky.dao.DriverDao;
 import com.kh.lucky.dto.DriverDto;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "기사 관리", description = "driver CRUD 구현")
+
 @CrossOrigin
 @RestController
 @RequestMapping("/driver")
