@@ -32,12 +32,12 @@
 	
 	<update id="editAll">
 		update bus set
-			bus_num = #{busNum}
-			bus_seat = #{busSeat}
-			bus_status = #{busStatus}
-			driver_no = #{driverNo}
-			bus_model = #{busModel}
-			grade_type = #{gradeType}
+			bus_num = #{busNum},
+			bus_seat = #{busSeat},
+			bus_status = #{busStatus},
+			driver_no = #{driverNo},
+			bus_model = #{busModel},
+			grade_type = #{gradeType},
 			seat_no = #{seatNo}
 		where bus_no = #{busNo}
 	</update>

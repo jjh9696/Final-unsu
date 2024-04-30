@@ -15,47 +15,49 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kh.lucky.dao.BusDao;
-import com.kh.lucky.dto.BusDto;
+import com.kh.lucky.dao.RouteDao;
+import com.kh.lucky.dto.RouteDto;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name="버스 관리", description="bus CRUD 구현")
+@Tag(name = "노선 관리", description = "route CRUD 구현")
 
 @CrossOrigin
 @RestController
-@RequestMapping("/bus")
-public class BusRestController {
+@RequestMapping("/route")
+public class RouteRestController {
 
 	@Autowired
-	private BusDao busDao;
+	private RouteDao routeDao;
 	
 	//등록
 	@PostMapping("/")
-	public BusDto insert(@RequestBody BusDto busDto) {
-		int sequence = busDao.sequence();
-		busDto.setBusNo(sequence);
-		busDao.insert(busDto);
-		return busDao.selectOne(sequence);
+	public RouteDto insert(@RequestBody RouteDto routeDto) {
+		int sequence = routeDao.sequence(); //시퀀스 생성하고
+		routeDto.setRouteNo(sequence); //세팅해주고
+		routeDao.insert(routeDto); //저장
+		return routeDao.selectOne(sequence); //시퀀스 번호로 반환
 	}
-	//조회 전체
+	
+	//전체 조회
 	@GetMapping("/")
-	public List<BusDto> selectList(){
-		return busDao.selectList();
+	public List<RouteDto> selectList(){
+		return routeDao.selectList();
 	}
 	//조회 단일
-	@GetMapping("/{busNo}")
-	public ResponseEntity<BusDto> find(@PathVariable int busNo){
-		BusDto busDto = busDao.selectOne(busNo);
-		if(busDto == null) {
+	@GetMapping("/{routeNo}")
+	public ResponseEntity<RouteDto> find(@PathVariable int routeNo){
+		RouteDto routeDto = routeDao.selectOne(routeNo);
+		if(routeDto == null) {
 			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok().body(busDto); //정보가있으면 바디로 조회
+		return ResponseEntity.ok().body(routeDto);
 	}
+	
 	//전체 수정
 	@PutMapping("/")
-	public ResponseEntity<?> editAll(@RequestBody BusDto busDto){
-		boolean result = busDao.editAll(busDto);
+	public ResponseEntity<?> editAll(@RequestBody RouteDto routeDto){
+		boolean result = routeDao.editAll(routeDto);
 		if(result == false) {
 			return ResponseEntity.notFound().build();
 		}
@@ -63,8 +65,8 @@ public class BusRestController {
 	}
 	//일부수정
 	@PatchMapping("/")
-	public ResponseEntity<?> edit(@RequestBody BusDto busDto){
-		boolean result = busDao.edit(busDto);
+	public ResponseEntity<?> edit(@RequestBody RouteDto routeDto){
+		boolean result = routeDao.editAll(routeDto);
 		if(result == false) {
 			return ResponseEntity.notFound().build();
 		}
@@ -72,13 +74,13 @@ public class BusRestController {
 	}
 	
 	//삭제
-	@DeleteMapping("/{busNo}")
-	public ResponseEntity<?> delete(@PathVariable int busNo){
-		BusDto busDto = busDao.selectOne(busNo);
-		boolean result = busDao.delete(busNo);
+	@DeleteMapping("/{routeNo}")
+	public ResponseEntity<?> delete(@PathVariable int routeNo){
+		RouteDto routeDto = routeDao.selectOne(routeNo);
+		boolean result = routeDao.delete(routeNo);
 		if(result == false) {
 			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok().body(busDto);
+		return ResponseEntity.ok().body(routeDto);
 	}
 }
