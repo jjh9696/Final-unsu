@@ -15,6 +15,8 @@ public class RouteDto {
 	private String routeStart; //출발지
 	private String routeEnd; //도착지
 	private int busNo; //버스 번호
-	private String routeWay; //편도,왕복
 	private String routePay; //요금
+	private String routeWay; //편도 or 왕복
 }
+
+
