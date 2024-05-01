@@ -13,14 +13,14 @@
 	
 	<insert id="insert">
 		insert into route(
-			route_no, route_time, route_km, route_pay,
+			route_no, route_time, route_km,
 			route_start_time, route_end_time, route_start, route_end,
-			bus_no, terminal_id
+			bus_no, route_way
 		)
 		values(
-			#{routeNo}, #{routeTime}, #{routeKm}, #{routePay},
+			#{routeNo}, #{routeTime}, #{routeKm},
 			#{routeStartTime}, #{routeEndTime}, #{routeStart}, #{routeEnd},
-			#{busNo},  #{terminalId}
+			#{busNo}, #{routeWay}
 		)
 	</insert>
 	
@@ -36,13 +36,12 @@
 		update route set
 			route_time = #{routeTime},
 			route_km = #{routeKm},
-			route_pay = #{routePay},
 			route_start_time = #{routeStartTime},
 			route_end_time = #{routeEndTime},
 			route_start = #{routeStart},
 			route_end = #{routeEnd},
 			bus_no = #{busNo},
-			 terminal_id = #{terminalId}
+			route_way = #{routeWay}
 		where route_no = #{routeNo}
 	</update>
 	
@@ -51,13 +50,12 @@
 		<set>
 			<if test="routeTime != null">route_time = #{routeTime},</if>
 			<if test="routeKm > 0">route_km = #{routeKm},</if>
-			<if test="routePay > 0">route_pay = #{routePay},</if>
 			<if test="routeStartTime != null">route_start_time = #{routeStartTime},</if>
 			<if test="routeEndTime != null">route_end_time = #{routeEndTime},</if>
 			<if test="routeStart != null">route_start = #{routeStart},</if>		
 			<if test="routeEnd != null">route_end = #{routeEnd},</if>
 			<if test="busNo != null">bus_no = #{busNo},</if>
-			 <if test="terminalId != null">terminal_id = #{terminalId}</if>
+			 <if test="routeWay != null">route_way = #{routeWay}</if>
 		</set>
 		where route_no = #{routeNo}
 	</update>
