@@ -56,7 +56,7 @@ public class DriverRestController {
 	}
 	//일부수정
 	@PatchMapping("/")
-	public ResponseEntity<?> edit(@RequestBody DriverDto driverDto){
+	public ResponseEntity<?> edit(@RequestBody DriverDto driverDto ){
 		boolean result = driverDao.edit(driverDto);
 		if(result == false) {
 			return ResponseEntity.notFound().build();
