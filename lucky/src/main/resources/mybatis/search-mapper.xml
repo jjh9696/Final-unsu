@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="search">
+    	<select id="list" resultType="SearchVO">
+    	
+    	SELECT * FROM route 
+	INNER JOIN bus ON route.BUS_NO = bus.BUS_NO
+	INNER JOIN grade ON grade.GRADE_TYPE  = bus.GRADE_TYPE 
+    	
+    	</select>
+    </mapper>
