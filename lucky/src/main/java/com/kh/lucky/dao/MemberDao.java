@@ -21,4 +21,11 @@ public class MemberDao {
 	public MemberDto selectOne(String memberId) {
 		return sqlSession.selectOne("member.find", memberId);
 	}
+	public MemberDto selectEmail(String memberEmail)	{
+		return sqlSession.selectOne("member.find",memberEmail);
+	}
+	public void updateMemberPw(MemberDto memberDto) {
+		// TODO Auto-generated method stub
+		
+	}
 }

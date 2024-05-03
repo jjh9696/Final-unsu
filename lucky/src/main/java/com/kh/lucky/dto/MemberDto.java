@@ -16,7 +16,6 @@ public class MemberDto {
 	private String memberPw; // 회원비밀번호
 	private String memberName; // 회원이름
 	private String memberBirth; // 회원생년월일
-	private String memberSex; // 성별
 	private String memberEmail; // 회원이메일
 	private String memberPhone; // 회원연락처
 	private String memberLevel; // 회원등급(일반회원/관리자/최고관리자)

@@ -17,13 +17,17 @@
 	</select>
 	<!-- 등록 -->
 	<insert id="save">
-		INSERT INTO member (member_id, member_pw,
-		member_name, member_birth, member_sex, member_email, member_phone,
-		member_level, member_join_date, member_point, member_zip,
-		member_addr1, member_addr2, provider_id, member_privacy_agree,
-		member_privacy_date, member_service_agree, member_bus_agree)
-		VALUES
-		(#{memberId},#{memberPw},#{memberName},#{memberBirth},#{memberSex},#{memberEmail},#{memberPhone},#{memberLevel},);
+		INSERT INTO member (
+		member_id, member_pw,member_name, member_birth, 
+		member_email, member_phone,	member_level, member_join_date, 
+		member_point, member_zip,member_addr1, member_addr2, 
+		member_privacy_agree, member_privacy_date, member_service_agree, member_bus_agree)
+		VALUES (
+		#{memberId},#{memberPw},#{memberName},#{memberBirth},
+		#{memberEmail},#{memberPhone},#{memberLevel},#{memberJoinDate},
+		#{memberPoint},#{memberZip},#{memberAddr1},#{memberAddr2},
+		#{memberPrivacyAgree},#{memberPrivacyDate},#{memberServiceAgree},#{memberBusAgree},
+		);
 
 	</insert>
 
