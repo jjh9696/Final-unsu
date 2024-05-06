@@ -29,6 +29,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "회원 정보 관리 도구")
 
+
 @CrossOrigin
 @RestController
 @RequestMapping("/member")
@@ -51,6 +52,11 @@ public class MemberRestcontroller {
 		if (memberDto == null)
 			return ResponseEntity.notFound().build();
 		return ResponseEntity.ok().body(memberDto);
+	}
+	//회원가입
+	@PostMapping("/join")//등록
+	public void insert(@RequestBody MemberDto memberDto) {
+		memberDao.insert(memberDto);
 	}
 
 	@PostMapping("/login")
@@ -75,7 +81,7 @@ public class MemberRestcontroller {
 	}
 
 	// refresh token 으로 로그인하는 매핑
-	// header에 있는 Authorization이라는 항목을 읽어 해석 한 뒤 결과를 반환
+	// header에 있는 Authorization이라는 항목을 읽어 해석 한 뒤 결과를 반환	
 	// refresh
 	@PostMapping("/refresh")
 	public ResponseEntity<MemberLoginVO> refresh(@RequestHeader("Authorization") String refreshToken) {

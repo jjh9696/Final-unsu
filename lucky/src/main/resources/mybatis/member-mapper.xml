@@ -18,16 +18,26 @@
 	<!-- 등록 -->
 	<insert id="save">
 		INSERT INTO member (
-		member_id, member_pw,member_name, member_birth, 
-		member_email, member_phone,	member_level, member_join_date, 
-		member_point, member_zip,member_addr1, member_addr2, 
-		member_privacy_agree, member_privacy_date, member_service_agree, member_bus_agree)
-		VALUES (
-		#{memberId},#{memberPw},#{memberName},#{memberBirth},
-		#{memberEmail},#{memberPhone},#{memberLevel},#{memberJoinDate},
-		#{memberPoint},#{memberZip},#{memberAddr1},#{memberAddr2},
-		#{memberPrivacyAgree},#{memberPrivacyDate},#{memberServiceAgree},#{memberBusAgree},
-		);
+        member_id,
+        member_pw,
+        member_name,
+        member_birth,
+        member_email,
+        member_phone
+        <if test="memberZip != null">, member_zip</if>
+        <if test="memberAddr1 != null">, member_addr1</if>
+        <if test="memberAddr2 != null">, member_addr2</if>
+    ) VALUES (
+        #{memberId},
+        #{memberPw},
+        #{memberName},
+        #{memberBirth},
+        #{memberEmail},
+        #{memberPhone}
+        <if test="memberZip != null">, #{memberZip}</if>
+        <if test="memberAddr1 != null">, #{memberAddr1}</if>
+        <if test="memberAddr2 != null">, #{memberAddr2}</if>
+    )
 
 	</insert>
 

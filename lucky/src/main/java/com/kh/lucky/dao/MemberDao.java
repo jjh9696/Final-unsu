@@ -21,8 +21,14 @@ public class MemberDao {
 	public MemberDto selectOne(String memberId) {
 		return sqlSession.selectOne("member.find", memberId);
 	}
+	
+	// 아이디 중복검사할 때 필요함
 	public MemberDto selectEmail(String memberEmail)	{
 		return sqlSession.selectOne("member.find",memberEmail);
+	}
+	// 가입
+	public void insert(MemberDto memberDto) {
+		sqlSession.insert("member.save",memberDto);
 	}
 	public void updateMemberPw(MemberDto memberDto) {
 		// TODO Auto-generated method stub
