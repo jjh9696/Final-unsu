@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.lucky.dao.RouteDao;
 import com.kh.lucky.dto.RouteDto;
-import com.kh.lucky.vo.RouteTimesVO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
