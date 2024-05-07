@@ -58,4 +58,11 @@
 		delete bus where bus_no = #{busNo}
 	</delete>
 	
+	<!-- 버스번호로 차량번호판 찾기 -->
+	<select id="findBusNum" resultType="busDto">
+        SELECT bus_num
+        FROM bus
+        WHERE bus_no = #{busNo}
+    </select>
+	
 </mapper>

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.lucky.dao.RouteDao;
 import com.kh.lucky.dto.RouteDto;
+import com.kh.lucky.vo.RouteTimesVO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -29,56 +30,58 @@ public class RouteRestController {
 
 	@Autowired
 	private RouteDao routeDao;
-	
-	//등록
+
+	// 등록
 	@PostMapping("/")
 	public RouteDto insert(@RequestBody RouteDto routeDto) {
-		int sequence = routeDao.sequence(); //시퀀스 생성하고
-		routeDto.setRouteNo(sequence); //세팅해주고
-		routeDao.insert(routeDto); //저장
-		return routeDao.selectOne(sequence); //시퀀스 번호로 반환
+		int sequence = routeDao.sequence(); // 시퀀스 생성하고
+		routeDto.setRouteNo(sequence); // 세팅해주고
+		routeDao.insert(routeDto); // 저장
+		return routeDao.selectOne(sequence); // 시퀀스 번호로 반환
 	}
-	
-	//전체 조회
+
+	// 전체 조회
 	@GetMapping("/")
-	public List<RouteDto> selectList(){
+	public List<RouteDto> selectList() {
 		return routeDao.selectList();
 	}
-	//조회 단일
+
+	// 조회 단일
 	@GetMapping("/{routeNo}")
-	public ResponseEntity<RouteDto> find(@PathVariable int routeNo){
+	public ResponseEntity<RouteDto> find(@PathVariable int routeNo) {
 		RouteDto routeDto = routeDao.selectOne(routeNo);
-		if(routeDto == null) {
+		if (routeDto == null) {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok().body(routeDto);
 	}
-	
-	//전체 수정
+
+	// 전체 수정
 	@PutMapping("/")
-	public ResponseEntity<?> editAll(@RequestBody RouteDto routeDto){
+	public ResponseEntity<?> editAll(@RequestBody RouteDto routeDto) {
 		boolean result = routeDao.editAll(routeDto);
-		if(result == false) {
+		if (result == false) {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok().build();
 	}
-	//일부수정
+
+	// 일부수정
 	@PatchMapping("/")
-	public ResponseEntity<?> edit(@RequestBody RouteDto routeDto){
+	public ResponseEntity<?> edit(@RequestBody RouteDto routeDto) {
 		boolean result = routeDao.editAll(routeDto);
-		if(result == false) {
+		if (result == false) {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok().build();
 	}
-	
-	//삭제
+
+	// 삭제
 	@DeleteMapping("/{routeNo}")
-	public ResponseEntity<?> delete(@PathVariable int routeNo){
+	public ResponseEntity<?> delete(@PathVariable int routeNo) {
 		RouteDto routeDto = routeDao.selectOne(routeNo);
 		boolean result = routeDao.delete(routeNo);
-		if(result == false) {
+		if (result == false) {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok().body(routeDto);

@@ -46,14 +46,14 @@ public class TerminalRestController {
 	}
 
 	// 조회 단일
-	@GetMapping("/{terminalId}")
-	public ResponseEntity<TerminalDto> find(@PathVariable int terminalId) {
-		TerminalDto busDto = terminalDao.selectOne(terminalId);
-		if (busDto == null) {
-			return ResponseEntity.notFound().build();
-		}
-		return ResponseEntity.ok().body(busDto); // 정보가있으면 바디로 조회
-	}
+//	@GetMapping("/{terminalId}")
+//	public ResponseEntity<TerminalDto> find(@PathVariable int terminalId) {
+//		TerminalDto busDto = terminalDao.selectOne(terminalId);
+//		if (busDto == null) {
+//			return ResponseEntity.notFound().build();
+//		}
+//		return ResponseEntity.ok().body(busDto); // 정보가있으면 바디로 조회
+//	}
 
 	// 전체 수정
 	@PutMapping("/")
@@ -81,6 +81,16 @@ public class TerminalRestController {
 		TerminalDto terminalDto = terminalDao.selectOne(terminalId);
 		boolean result = terminalDao.delete(terminalId);
 		if (result == false) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(terminalDto);
+	}
+
+	//터미널아이디 검색해서 터미널명,지역조회하기
+	@GetMapping("/{terminalId}")
+	public ResponseEntity<TerminalDto> getTerminalById(@PathVariable int terminalId) {
+		TerminalDto terminalDto = terminalDao.getTerminalById(terminalId);
+		if(terminalDto == null) {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok().body(terminalDto);
