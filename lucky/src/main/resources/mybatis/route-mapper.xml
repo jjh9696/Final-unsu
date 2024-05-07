@@ -8,43 +8,46 @@
 <mapper namespace="route">
 
 	<select id="sequence" resultType="int">
-		select route_seq.nextval from dual
+		select route_seq.nextval from
+		dual
 	</select>
-	
+
 	<insert id="insert">
 		insert into route(
-			route_no, route_time, route_km,
-			route_start_time, route_end_time, route_start, route_end,
-			bus_no, route_way
+		route_no, route_time, route_km,
+		route_start_time, route_end_time, route_start, route_end,
+		bus_no, route_way
 		)
 		values(
-			#{routeNo}, #{routeTime}, #{routeKm},
-			#{routeStartTime}, #{routeEndTime}, #{routeStart}, #{routeEnd},
-			#{busNo}, #{routeWay}
+		#{routeNo}, #{routeTime}, #{routeKm},
+		#{routeStartTime}, #{routeEndTime}, #{routeStart}, #{routeEnd},
+		#{busNo}, #{routeWay}
 		)
 	</insert>
-	
+
 	<select id="list" resultType="RouteDto">
-		select * from route order by route_no asc
+		select * from route order by
+		route_no asc
 	</select>
-	
+
 	<select id="find" resultType="RouteDto">
-		select * from route where route_no = #{routeNo}
+		select * from route where route_no
+		= #{routeNo}
 	</select>
-	
+
 	<update id="editAll">
 		update route set
-			route_time = #{routeTime},
-			route_km = #{routeKm},
-			route_start_time = #{routeStartTime},
-			route_end_time = #{routeEndTime},
-			route_start = #{routeStart},
-			route_end = #{routeEnd},
-			bus_no = #{busNo},
-			route_way = #{routeWay}
+		route_time = #{routeTime},
+		route_km = #{routeKm},
+		route_start_time = #{routeStartTime},
+		route_end_time = #{routeEndTime},
+		route_start = #{routeStart},
+		route_end = #{routeEnd},
+		bus_no = #{busNo},
+		route_way = #{routeWay}
 		where route_no = #{routeNo}
 	</update>
-	
+
 	<update id="edit">
 		update route
 		<set>
@@ -52,16 +55,24 @@
 			<if test="routeKm > 0">route_km = #{routeKm},</if>
 			<if test="routeStartTime != null">route_start_time = #{routeStartTime},</if>
 			<if test="routeEndTime != null">route_end_time = #{routeEndTime},</if>
-			<if test="routeStart != null">route_start = #{routeStart},</if>		
+			<if test="routeStart != null">route_start = #{routeStart},</if>
 			<if test="routeEnd != null">route_end = #{routeEnd},</if>
 			<if test="busNo != null">bus_no = #{busNo},</if>
-			 <if test="routeWay != null">route_way = #{routeWay}</if>
+			<if test="routeWay != null">route_way = #{routeWay}</if>
 		</set>
 		where route_no = #{routeNo}
 	</update>
-	
+
 	<delete id="delete">
 		delete route where route_no = #{routeNo}
 	</delete>
+
+	<!-- 출발,도착시간 시간양식으로 출력하기 -->
+	<select id="getTime" resultType="RouteTimesVO">
+		SELECT route_start, route_end, 
+		TO_CHAR(route_start_time, 'HH24:MI') AS route_start_time,
+		TO_CHAR(route_end_time, 'HH24:MI') AS route_end_time
+		FROM route WHERE route_start = #{routeStart}
+	</select>
 
 </mapper>
