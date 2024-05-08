@@ -1,15 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
-    <mapper namespace="search">
-    	<select id="list" resultType="SearchVO">
-    	
-    	SELECT * FROM route 
-	INNER JOIN bus ON route.BUS_NO = bus.BUS_NO
-	INNER JOIN grade ON grade.GRADE_TYPE  = bus.GRADE_TYPE 
-    	
-    	</select>
-    </mapper>
+<mapper namespace="search">
+    <select id="list" resultType="SearchVO">
+      SELECT
+            terminal_start.TERMINAL_NAME AS routeStartName,
+            terminal_end.TERMINAL_NAME AS routeEndName,
+            route.ROUTE_START_TIME AS routeStartTime,
+            route.ROUTE_END_TIME AS routeEndTime,
+            bus.BUS_NO AS busNo,
+            grade.GRADE_TYPE AS gradeType
+        FROM
+            route
+        INNER JOIN
+            bus ON route.BUS_NO = bus.BUS_NO
+        INNER JOIN
+            grade ON bus.GRADE_TYPE = grade.GRADE_TYPE
+        INNER JOIN
+            terminal terminal_start ON route.ROUTE_START = terminal_start.TERMINAL_ID
+        INNER JOIN
+            terminal terminal_end ON route.ROUTE_END = terminal_end.TERMINAL_ID
+        WHERE
+            route.ROUTE_START = #{startTerminalId}
+            AND route.ROUTE_END = #{endTerminalId}
+            AND route.ROUTE_START_TIME &gt;= #{startTime}
+            AND route.ROUTE_END_TIME &lt;= #{endTime}
+        ORDER BY
+            route.ROUTE_START_TIME ASC;
+    </select>
+    
+</mapper>
