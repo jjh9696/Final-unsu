@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.lucky.dao.NoticeDao;
@@ -241,44 +242,62 @@ public class NoticeRestController {
 			),
 		}
 	)
-	@PostMapping("/search/column/{column}/keyword/{keyword}")
-	public List<NoticeDto> searchList(@PathVariable String column,
-									@PathVariable String keyword){
-			//System.out.println("column : " + column + ", keyword : " + keyword);  
-		return noticeDao.searchList(column, keyword);
-	}
-		
+    @GetMapping("/search/column/{column}/keyword/{keyword}")
+	public NoticeDataVO searchList(
+		    @PathVariable String column,
+		    @PathVariable String keyword,
+		    @RequestParam int page,
+		    @RequestParam int size
+		) {
+		int beginRow = page * size - (size - 1);
+	    int endRow = page * size;
+	    
+	    List<NoticeDto> list = noticeDao.searchListByPaging(column, keyword, beginRow, endRow);
+	    int count = noticeDao.countBySearch(column, keyword);
+	    int totalPages = count / size + 1; 
+	    
+	    PageVO pageVO = PageVO.builder()
+	                          .column(column)
+	                          .keyword(keyword)
+	                          .page(page)
+	                          .size(size)
+	                          .count(count)
+	                          .build();
+	    
+	    return NoticeDataVO.builder()
+	                       .list(list)
+	                       .pageVO(pageVO)
+	                       .build();
+
+    }
+
+	
+//	//기존 검색 조회 코드
+//	@GetMapping("/search/column/{column}/keyword/{keyword}")
+//	public List<NoticeDto> searchList(@PathVariable String column,
+//										@PathVariable String keyword){
+//			//System.out.println("column : " + column + ", keyword : " + keyword);  
+//		return noticeDao.searchList(column, keyword);
+//	}
 	//최신순 페이지네이션 + 무한스크롤
 	@Operation(
-	description = "최신순 페이지 공지사항 조회",
-	responses = {
-		@ApiResponse(responseCode = "200",description = "조회 완료",
-			content = @Content(
-					mediaType = "application/json",
-					array = @ArraySchema(schema = @Schema(implementation = NoticeDto.class))
-			)
-		),
-		@ApiResponse(responseCode = "500",description = "서버 오류",
-			content = @Content(
-					mediaType = "text/plain",
-					schema = @Schema(implementation = String.class), 
-					examples = @ExampleObject("server error")
+		description = "조회순 페이지 공지사항 조회",
+		responses = {
+			@ApiResponse(responseCode = "200",description = "조회 완료",
+				content = @Content(
+						mediaType = "application/json",
+						array = @ArraySchema(schema = @Schema(implementation = NoticeDto.class))
 				)
 			),
-		}
-	)
-//	@GetMapping("/page/{page}/size/{size}")
-//	public NoticeDataVO list(@PathVariable int page, @PathVariable int size) {
-//		List<NoticeDto> list = noticeDao.selectListByPaging(page, size);
-//		int count = noticeDao.count();
-//		int endRow = page * size;
-//		boolean last = endRow >= count;
-//		return NoticeDataVO.builder()
-//					.list(list)//화면에 표시할 목록
-//					.count(count)//총 데이터 개수
-//					.last(last)//마지막 여부(마지막 확인시 : true, 아닐시 : false)
-//				.build();
-//	}
+			@ApiResponse(responseCode = "500",description = "서버 오류",
+				content = @Content(
+						mediaType = "text/plain",
+						schema = @Schema(implementation = String.class), 
+						examples = @ExampleObject("server error")
+					)
+				),
+			}
+		)
 	//페이지내비게이터 구현 
 	@GetMapping("/page/{page}/size/{size}")
 	public NoticeDataVO list(@PathVariable int page, @PathVariable int size) {
@@ -307,6 +326,19 @@ public class NoticeRestController {
 	            .pageVO(pageVO) // 페이지 정보 설정
 	            .build();
 	}
+//	기존 코드
+//	@GetMapping("/page/{page}/size/{size}")
+//	public NoticeDataVO list(@PathVariable int page, @PathVariable int size) {
+//		List<NoticeDto> list = noticeDao.selectListByPaging(page, size);
+//		int count = noticeDao.count();
+//		int endRow = page * size;
+//		boolean last = endRow >= count;
+//		return NoticeDataVO.builder()
+//					.list(list)//화면에 표시할 목록
+//					.count(count)//총 데이터 개수
+//					.last(last)//마지막 여부(마지막 확인시 : true, 아닐시 : false)
+//				.build();
+//	}
 		
 	
 	//조회순 페이지네이션 + 무한스크롤
@@ -329,7 +361,6 @@ public class NoticeRestController {
 		}
 	)
 	@GetMapping("/viewPage/{page}/viewSize/{size}")
-
 	public NoticeDataVO viewList(@PathVariable int page, @PathVariable int size) {
 		
 		int beginRow = page * size - (size-1);
@@ -348,7 +379,6 @@ public class NoticeRestController {
 	            .list(list) // 화면에 표시할 목록 설정
 	            .pageVO(pageVO) // 페이지 정보 설정
 	            .build();
-	    
 	}
 	
 	

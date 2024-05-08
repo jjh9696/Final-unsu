@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.lucky.dto.NoticeDto;
-import com.kh.lucky.vo.NoticeDataVO;
+import com.kh.lucky.vo.PageVO;
 
 @Repository
 public class NoticeDao {
@@ -82,10 +82,29 @@ public class NoticeDao {
 		data.put("endRow", endRow);
 		return sqlSession.selectList("notice.listViewByPaging", data);
 	}
-	//목록 개수
+	//전체 목록 개수
 	public int count() {
 		return sqlSession.selectOne("notice.count");
 	}
+	//키워드 검색 목록 페이징
+    public List<NoticeDto> searchListByPaging(
+    		String column, String keyword, int beginRow, int endRow) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("column", column);
+        data.put("keyword", keyword);
+        data.put("beginRow", beginRow);
+        data.put("endRow", endRow);
+        return sqlSession.selectList("notice.searchListByPaging", data);
+    }
+    //키워드 검색 목록 개수
+	public int countBySearch(String column, String keyword) {
+		Map<String, Object> data = new HashMap<>();
+		data.put("column", column);
+        data.put("keyword", keyword);
+		return sqlSession.selectOne("notice.searchByCount", data);
+	}
+	
+	
 	
 	
 }
