@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="reservation">
+    
+    <select id="sequence" resultType="int">
+    select reservation_seq.nextval from dual
+    </select>
+    
+    <insert id="insert">
+    insert into reservation(
+    	reservation_no, reservation_date, reservation_time, 
+    	member_id , grade_type , route_no , bus_no , seat_no
+    )
+    values(
+     #{reservationNo},#{reservationDate},#{reservationTime},
+     #{memberId}, #{gradeType} , #{routeNo} , #{busNo}, #{seatNo}
+    )
+    </insert>
+    
+    <select id="list" resultType="ReservationDto">
+    	select * from reservation order by reservation_no asc
+    </select>
+    
+    <select id="find" resultType="ReservationDto">
+    	select * from reservation where reservation_no =#{ReservationNo}
+    </select>
+    
+    <update id="editAll">
+    	update reservation set
+    	reservation_date =#{reservationDate},
+    	reservation_time =#{reservationTime},
+    	member_id =#{memberId},
+    	grade_type =#{gradeType},
+    	route_no =#{routeNo}
+    	bus_no =#{busNo},
+    	seat_no =#{seatNo}
+    	where reservation_no =#{reservationNo}
+    </update>
+    
+    <update id="edit">
+    	update reservation
+    	<set>
+    		<if test="reservationNo != null">reservation_no = #{reservationNo},</if>
+    		<if test="reservationDate != null">reservation_date = #{reservationDate},</if>
+    		<if test="reservationTime != null">reservation_time = #{reservationTime},</if>
+    		<if test="memberId != null">member_id = #{memberId},</if>
+    		<if test="gradeType != null">gradeType = #{gradeType},</if>
+    		<if test="routeNo != null">routeNo = #{routeNo},</if>
+    		<if test="busNo != null">busNo = #{busNo},</if>
+    		<if test="seatNo != null">seatNo = #{seatNo}</if>
+    	</set>
+    	where reservationNo = #{reservationNo}
+    </update>
+    
+    <delete id="delete">
+		delete reservation where reservation_no = #{reservationNo}
+	</delete>
+    
+    
+    </mapper>
