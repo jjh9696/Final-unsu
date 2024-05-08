@@ -1,6 +1,8 @@
 package com.kh.lucky.restcontroller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -85,5 +87,11 @@ public class RouteRestController {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok().body(routeDto);
+	}
+	
+	//시간조회
+	@GetMapping("/time")
+	public List<RouteTimesVO> getTimeList() {
+		return routeDao.getTimeList();
 	}
 }

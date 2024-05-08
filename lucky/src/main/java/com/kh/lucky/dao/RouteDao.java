@@ -51,4 +51,9 @@ public class RouteDao {
 	public boolean delete(int routeNo) {
 		return sqlSession.delete("route.delete", routeNo) > 0;
 	}
+	
+	//VO 리스트
+	public List<RouteTimesVO> getTimeList() {
+	    return sqlSession.selectList("route.getTimeList");
+	}
 }
