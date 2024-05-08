@@ -16,7 +16,8 @@
 		insert into route(
 		route_no, route_time, route_km,
 		route_start_time, route_end_time, route_start, route_end,
-		bus_no, route_way
+		bus_no,
+		route_way
 		)
 		values(
 		#{routeNo}, #{routeTime}, #{routeKm},
@@ -38,9 +39,11 @@
 	<update id="editAll">
 		update route set
 		route_time = #{routeTime},
-		route_km = #{routeKm},
+		route_km =
+		#{routeKm},
 		route_start_time = #{routeStartTime},
-		route_end_time = #{routeEndTime},
+		route_end_time =
+		#{routeEndTime},
 		route_start = #{routeStart},
 		route_end = #{routeEnd},
 		bus_no = #{busNo},
@@ -68,11 +71,12 @@
 	</delete>
 
 	<!-- 출발,도착시간 시간양식으로 출력하기 -->
-	<select id="getTime" resultType="RouteTimesVO">
-		SELECT route_start, route_end, 
+
+	<select id="getTimeList" resultType="RouteTimesVO">
+		SELECT route_start, route_end,
 		TO_CHAR(route_start_time, 'HH24:MI') AS route_start_time,
 		TO_CHAR(route_end_time, 'HH24:MI') AS route_end_time
-		FROM route WHERE route_start = #{routeStart}
+		FROM route
 	</select>
 
 </mapper>

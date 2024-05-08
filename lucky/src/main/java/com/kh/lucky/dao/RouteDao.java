@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.lucky.dto.RouteDto;
+import com.kh.lucky.vo.RouteTimesVO;
 
 @Repository
 public class RouteDao {
@@ -49,5 +50,10 @@ public class RouteDao {
 	// 삭제
 	public boolean delete(int routeNo) {
 		return sqlSession.delete("route.delete", routeNo) > 0;
+	}
+	
+	//VO 리스트
+	public List<RouteTimesVO> getTimeList() {
+	    return sqlSession.selectList("route.getTimeList");
 	}
 }

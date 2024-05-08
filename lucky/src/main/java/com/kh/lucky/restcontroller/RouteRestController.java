@@ -1,6 +1,8 @@
 package com.kh.lucky.restcontroller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.lucky.dao.RouteDao;
 import com.kh.lucky.dto.RouteDto;
+import com.kh.lucky.vo.RouteTimesVO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -84,5 +87,11 @@ public class RouteRestController {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok().body(routeDto);
+	}
+	
+	//시간조회
+	@GetMapping("/time")
+	public List<RouteTimesVO> getTimeList() {
+		return routeDao.getTimeList();
 	}
 }
