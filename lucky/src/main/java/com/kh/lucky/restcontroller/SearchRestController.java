@@ -7,14 +7,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.lucky.dao.SearchDao;
 import com.kh.lucky.vo.SearchVO;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 
 @CrossOrigin
 @RestController
@@ -25,9 +27,9 @@ public class SearchRestController {
 	private SearchDao searchDao;
 	
 	//조회 전체
-	@GetMapping("/")
-	public List<SearchVO> selectList(){
-		return searchDao.selectList();
+	@PostMapping("/")
+	public List<SearchVO> selectList(@RequestBody SearchVO VO){
+		return searchDao.selectList(VO.getStartTerminalId(),VO.getEndTerminalId(),VO.getStartTime(),VO.getEndTime() );
 	}
 	
 	//전체 수정
