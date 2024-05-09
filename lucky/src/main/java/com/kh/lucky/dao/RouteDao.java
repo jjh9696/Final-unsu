@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.lucky.dto.RouteDto;
+import com.kh.lucky.vo.RequestChargeVO;
 import com.kh.lucky.vo.RouteTimesVO;
 
 @Repository
@@ -53,6 +54,11 @@ public class RouteDao {
 	}
 	
 	//VO 리스트
+	public List<RouteTimesVO> getTimeList() {
+	    return sqlSession.selectList("route.getTimeList");
+	}
+	
+	
 //	public List<RouteTimesVO> getTimeList() {
 //	    return sqlSession.selectList("route.getTimeList");
 //	}
