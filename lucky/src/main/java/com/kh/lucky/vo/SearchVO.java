@@ -11,8 +11,12 @@ import lombok.NoArgsConstructor;
 public class SearchVO {
 	   private String routeStartName;
 	    private String routeEndName;
-	    private Date routeStartTime;
-	    private Date routeEndTime;
-	    private String busNo;
+	    private String routeStartTime;
+	    private String routeEndTime;
+	    private int busNo;
 	    private String gradeType;
+	    private String startTerminalId;
+	    private String endTerminalId;
+	    private String startTime;
+	    private String endTime;
 }
