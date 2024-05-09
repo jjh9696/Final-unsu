@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.lucky.dao.TerminalDao;
+import com.kh.lucky.dto.NoticeDto;
 import com.kh.lucky.dto.TerminalDto;
+import com.kh.lucky.vo.NoticeDataVO;
+import com.kh.lucky.vo.PageVO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -86,13 +89,33 @@ public class TerminalRestController {
 		return ResponseEntity.ok().body(terminalDto);
 	}
 
-	//터미널아이디 검색해서 터미널명,지역조회하기
+	// 터미널아이디 검색해서 터미널명,지역조회하기
 	@GetMapping("/{terminalId}")
 	public ResponseEntity<TerminalDto> getTerminalById(@PathVariable int terminalId) {
 		TerminalDto terminalDto = terminalDao.getTerminalById(terminalId);
-		if(terminalDto == null) {
+		if (terminalDto == null) {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok().body(terminalDto);
 	}
+
+	// 페이지내비게이터 구현
+//	@GetMapping("/page/{page}/size/{size}")
+//	public List<TerminalDto> list(@PathVariable int page, @PathVariable int size) {
+//
+//		int beginRow = page * size - (size - 1);
+//		int endRow = page * size;
+//
+//		List<TerminalDto> list = terminalDao.listByPaging(beginRow, endRow); // 페이지 번호와 페이지 크기를 이용하여 데이터 조회
+//		int count = terminalDao.count(); // 전체 데이터 개수 조회
+//		int totalPages = count / size + 1; // 전체 페이지 수 계산
+//
+//		PageVO pageVO = PageVO.builder()
+//				.page(page) // 현재 페이지 번호 설정
+//				.size(size) // 페이지 크기 설정
+//				.count(count) // 전체 개수 설정
+//				.build();
+//
+//		return TerminalDto.builder();
+//	}
 }

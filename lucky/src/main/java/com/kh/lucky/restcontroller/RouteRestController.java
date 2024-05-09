@@ -71,7 +71,7 @@ public class RouteRestController {
 	// 일부수정
 	@PatchMapping("/")
 	public ResponseEntity<?> edit(@RequestBody RouteDto routeDto) {
-		boolean result = routeDao.editAll(routeDto);
+		boolean result = routeDao.edit(routeDto);
 		if (result == false) {
 			return ResponseEntity.notFound().build();
 		}
@@ -90,8 +90,16 @@ public class RouteRestController {
 	}
 	
 	//시간조회
-	@GetMapping("/time")
-	public List<RouteTimesVO> getTimeList() {
-		return routeDao.getTimeList();
-	}
+//	@GetMapping("/time")
+//	public List<RouteTimesVO> getTimeList() {
+//		return routeDao.getTimeList();
+//	}
+//	@GetMapping("/time/{routeStart}/{routeEnd}")
+//	public ResponseEntity<List<RouteTimesVO>> getTimeList(@PathVariable int routeStart, @PathVariable int routeEnd){
+//		List<RouteTimesVO> routeTimes = routeDao.getTimeList(routeStart, routeEnd);
+//		 if(routeTimes == null) {
+//		        return ResponseEntity.notFound().build();
+//		    }
+//		    return ResponseEntity.ok().body(routeTimes);
+//		}
 }

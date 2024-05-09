@@ -62,6 +62,14 @@
 		select count(*) from terminal
 	</select>
 	
+	<!-- 검색 페이징 -->
+	<select id="listByPaging" resultType="TerminalDto">
+		<include refid="top-n-header"></include>
+            select * from terminal
+            order by terminal.terminal_id asc
+		<include refid="top-n-footer"></include>
+	</select>
+	
 	<!-- 상단 -->
 	<sql id="top-n-header">
 	    <if test="beginRow != null and endRow != null">

@@ -56,11 +56,10 @@
 		<set>
 			<if test="routeTime != null">route_time = #{routeTime},</if>
 			<if test="routeKm > 0">route_km = #{routeKm},</if>
-			<if test="routeStartTime != null">route_start_time = #{routeStartTime},</if>
-			<if test="routeEndTime != null">route_end_time = #{routeEndTime},</if>
+			<if test="routeStartTime != null">route_start_time = TO_date(#{routeStartTime}, 'YYYY-MM-DD HH24:MI'),</if>
+			<if test="routeEndTime != null">route_end_time = TO_date(#{routeEndTime}, 'YYYY-MM-DD HH24:MI'),</if>
 			<if test="routeStart != null">route_start = #{routeStart},</if>
 			<if test="routeEnd != null">route_end = #{routeEnd},</if>
-			<if test="busNo != null">bus_no = #{busNo},</if>
 			<if test="routeWay != null">route_way = #{routeWay}</if>
 		</set>
 		where route_no = #{routeNo}
@@ -70,6 +69,33 @@
 		delete route where route_no = #{routeNo}
 	</delete>
 
-
+	<select id="getTimeList" resultType="RouteTimesVO">
+		SELECT route_start, route_end,
+			TO_CHAR(route_start_time, 'YYYY-MM-DD HH24:MI') AS route_start_time,
+			TO_CHAR(route_end_time, 'YYYY-MM-DD HH24:MI') AS route_end_time
+		FROM route 
+		where route_start = #{routeStart} and route_end = #{routeEnd}
+	</select>
+	
+	
+	<!-- 목록 개수 -->
+	<select id="count" resultType="int">
+		select count(*) from terminal
+	</select>
+	
+	<!-- 상단 -->
+	<sql id="top-n-header">
+	    <if test="beginRow != null and endRow != null">
+	    	select * from (
+	        	select rownum rn, TMP.* from (
+	    </if>
+	</sql>
+	<!-- 하단 -->
+	<sql id="top-n-footer">
+	    <if test="beginRow != null and endRow != null">
+		        )TMP
+		    ) where rn between #{beginRow} and #{endRow}
+	    </if>
+	</sql>
 
 </mapper>
