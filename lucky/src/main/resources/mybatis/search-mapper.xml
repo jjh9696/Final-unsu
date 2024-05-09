@@ -2,7 +2,39 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-    
+
+<mapper namespace="search">
+	<select id="list" resultType="SearchResponseVO">
+		SELECT
+			t1.terminal_name AS start_terminal_name,
+	    	t2.terminal_name AS end_terminal_name,
+	    	r.ROUTE_START_TIME,
+	    	r.ROUTE_TIME,
+	    	r.ROUTE_KM ,
+	    	r.ROUTE_NO,
+	    	b.grade_type ,
+	   	 	b.BUS_NO,
+	    	b.BUS_SEAT 
+		FROM
+		    route r
+			JOIN
+		   		terminal t1 ON r.route_start = t1.terminal_id
+			JOIN
+		    	terminal t2 ON r.route_end = t2.terminal_id
+			JOIN
+		    	bus b ON r.bus_no = b.bus_no
+			<where>
+		    	r.route_start = #{routeStart}
+		   		AND
+		    	r.route_end = #{routeEnd}
+		    	AND 
+  				r.ROUTE_START_TIME >= TO_DATE(#{routeStartTime}, 'YYYY-MM-DD HH24:MI')	
+		   		<if test="gradeType != null">AND b.grade_type = #{gradeType} </if>
+		    </where>
+	</select>
+
+</mapper>
+ <!--     
 <mapper namespace="search">
     <select id="list" resultType="SearchVO">
       SELECT
@@ -29,7 +61,7 @@
     </select>
     
 </mapper>
-
+-->
 
 <!-- <mapper namespace="search"> -->
 <!-- <select id="list" parameterType="map" resultMap="routeResultMap"> -->

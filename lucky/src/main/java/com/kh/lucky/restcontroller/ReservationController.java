@@ -1,6 +1,7 @@
 package com.kh.lucky.restcontroller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,13 +12,14 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.lucky.dao.ReservationDao;
 import com.kh.lucky.dto.ReservationDto;
+import com.kh.lucky.dto.TerminalDto;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 
 @CrossOrigin
@@ -28,20 +30,27 @@ public class ReservationController {
 	@Autowired
 	private ReservationDao reservationDao;
 	
-	//등록
-	@PostMapping("/")
-	public ReservationDto insert(@RequestBody ReservationDto reservationDto) {
-		int sequence =  reservationDao.sequence();
-		reservationDto.setReservationNo(sequence);
-		reservationDao.insert(reservationDto);
-		return reservationDao.selectOne(sequence);
-	}
-	
-	//조회전체
+	//조회
 	@GetMapping("/")
-	public List<ReservationDto> selectList(){
-		return reservationDao.selectList();
+	public List<TerminalDto> list(){
+		return reservationDao.selectListTerminal();
 	}
+	// 리액트에서 지역을 선택하면 터미널을 보여줌
+	@PostMapping("/")
+	public ResponseEntity<List<TerminalDto>> search(@RequestBody Map<String, String> requestBody) {
+	    String terminalRegion = requestBody.get("terminalRegion"); // 필요한건 terminalRegion 라는 이름으로 들어온 정보
+	    List<TerminalDto> searchTerminalDto = reservationDao.selectList(terminalRegion);
+	    // requestBody로 받은 terminalRegion의 정보를 DB에서 불러오는 구문을 실행하여 변수에 담음
+	    if(searchTerminalDto == null || searchTerminalDto.isEmpty()) {
+	    	// 담은 내용이 없거나 비어있으면 못찾음 리턴
+	        return ResponseEntity.notFound().build();
+	    }
+	    // 있으면 searchTerminalDto를 body에 담아서 준다
+	    return ResponseEntity.ok().body(searchTerminalDto);
+	}
+
+	
+	
 	
 	//조회 단일
 	@GetMapping("/{reservationNo}")

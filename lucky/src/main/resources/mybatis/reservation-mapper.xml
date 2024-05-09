@@ -21,9 +21,6 @@
     )
     </insert>
     
-    <select id="list" resultType="ReservationDto">
-    	select * from reservation order by reservation_no asc
-    </select>
     
     <select id="find" resultType="ReservationDto">
     	select * from reservation where reservation_no =#{ReservationNo}
@@ -59,6 +56,15 @@
     <delete id="delete">
 		delete reservation where reservation_no = #{reservationNo}
 	</delete>
+	
+		<select id="list" resultType="TerminalDto">
+		  SELECT * FROM TERMINAL WHERE TERMINAL_REGION LIKE 
+		  '%' || #{terminalRegion} || '%'
+	</select>
+	
+	<select id="terminalList" resultType="TerminalDto">
+		SELECT DISTINCT TERMINAL_REGION FROM terminal order by TERMINAL_REGION asc
+	</select>
     
     
     </mapper>
