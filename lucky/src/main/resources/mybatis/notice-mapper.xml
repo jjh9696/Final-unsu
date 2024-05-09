@@ -99,10 +99,24 @@
 		<include refid="top-n-footer"></include>
 	</select>
 	
+	<!-- 검색 페이징 -->
+	<select id="searchListByPaging" resultType="NoticeDto">
+		<include refid="top-n-header"></include>
+            select * from notice
+            where instr(${column}, #{keyword}) > 0
+            order by notice.notice_wdate desc
+		<include refid="top-n-footer"></include>
+	</select>
 	
-	<!-- 목록 개수 -->
+	<!-- 전체 목록 개수 -->
 	<select id="count" resultType="int">
 		select count(*) from notice
+	</select>
+	
+	<!-- 검색 결과 목록 개수 -->
+	<select id="searchByCount" resultType="int">
+		select count(*) from notice
+		where instr(${column}, #{keyword}) > 0
 	</select>
 	
 	<!-- 상단 -->
@@ -120,6 +134,22 @@
 	    </if>
 	</sql>
 	
+	<!-- 검색 페이징 -->
+	<!-- <select id="searchListByPaging" resultType="NoticeDto">
+		<![CDATA[
+        SELECT * FROM (
+            SELECT ROWNUM AS rn, B.* FROM (
+                SELECT 
+                    notice_no, notice_title, notice_content,
+                    notice_wdate, notice_view_count
+                FROM notice
+                WHERE instr(${column}, #{keyword}) > 0
+                ORDER BY notice_no DESC
+            ) B
+            WHERE ROWNUM <= #{endRow}
+        ) WHERE rn >= #{beginRow}
+        ]]>
+	</select> -->	
 </mapper>
 
 
