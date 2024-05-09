@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +31,11 @@ public class SearchRestController {
 		System.out.println("컨트롤러에서 확인"+request);
 		return searchDao.selectList(request);
 	}
+	//조회 전체
+//	@PostMapping("/")
+//	public List<SearchVO> selectList(@RequestBody SearchVO VO){
+//		return searchDao.selectList(VO.getStartTerminalId(),VO.getEndTerminalId(),VO.getStartTime(),VO.getEndTime() );
+//	}
 
 //	//전체 수정
 //	@PutMapping("/")
@@ -46,6 +54,5 @@ public class SearchRestController {
 //			return ResponseEntity.notFound().build();
 //		}
 //		return ResponseEntity.ok().build();
-//	}
-//	
+	
 }

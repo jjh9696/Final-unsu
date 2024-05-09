@@ -48,4 +48,14 @@ public class TerminalDao {
 	public boolean delete(int terminalId) {
 		return sqlSession.delete("terminal.delete", terminalId) > 0;
 	}
+
+	// 아이디로 터미널명 지역명 조회
+	public TerminalDto getTerminalById(int terminalId) {
+		return sqlSession.selectOne("terminal.findTerminalName", terminalId);
+	}
+
+	// 목록 개수
+	public int count() {
+		return sqlSession.selectOne("terminal.count");
+	}
 }
