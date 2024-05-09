@@ -50,18 +50,10 @@ public class ReservationController {
 	    return ResponseEntity.ok().body(searchTerminalDto);
 	}
 	@PostMapping("/end")
-	public ResponseEntity<List<FilterTerminalVO>> searchEnd(@RequestBody Map<String, Integer > requestBody) {
-	    int terminalId = requestBody.get("terminalId"); // 필요한건 terminalRegion 라는 이름으로 들어온 정보
-	    List<FilterTerminalVO> searchFilter = reservationDao.selectEndList(terminalId);
-	    // requestBody로 받은 terminalRegion의 정보를 DB에서 불러오는 구문을 실행하여 변수에 담음
-	    if(searchFilter == null || searchFilter.isEmpty()) {
-	    	// 담은 내용이 없거나 비어있으면 못찾음 리턴
-	        return ResponseEntity.notFound().build();
-	    }
-	    // 있으면 searchTerminalDto를 body에 담아서 준다
-	    return ResponseEntity.ok().body(searchFilter);
+	public List<FilterTerminalVO> searchEnd(@RequestBody TerminalDto terminalDto) {
+		return reservationDao.selectEndList(terminalDto);
 	}
-
+	
 	
 	
 	

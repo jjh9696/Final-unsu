@@ -55,8 +55,8 @@ public class ReservationDao {
 		return sqlSession.selectList("reservation.list", terminalRegion);
 	}
 	// 
-	public List<FilterTerminalVO> selectEndList(int terminalId) {
-		return sqlSession.selectList("reservation.filterList", terminalId);
+	public List<FilterTerminalVO> selectEndList(TerminalDto terminalDto) {
+		return sqlSession.selectList("reservation.filterList", terminalDto);
 	}
 
 
