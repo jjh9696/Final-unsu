@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.lucky.dao.ReservationDao;
 import com.kh.lucky.dto.ReservationDto;
 import com.kh.lucky.dto.TerminalDto;
+import com.kh.lucky.vo.FilterTerminalVO;
 
 
 
@@ -37,9 +38,9 @@ public class ReservationController {
 	}
 	// 리액트에서 지역을 선택하면 터미널을 보여줌
 	@PostMapping("/")
-	public ResponseEntity<List<TerminalDto>> search(@RequestBody Map<String, String> requestBody) {
+	public ResponseEntity<List<TerminalDto>> searchStart(@RequestBody Map<String, String> requestBody) {
 	    String terminalRegion = requestBody.get("terminalRegion"); // 필요한건 terminalRegion 라는 이름으로 들어온 정보
-	    List<TerminalDto> searchTerminalDto = reservationDao.selectList(terminalRegion);
+	    List<TerminalDto> searchTerminalDto = reservationDao.selectStartList(terminalRegion);
 	    // requestBody로 받은 terminalRegion의 정보를 DB에서 불러오는 구문을 실행하여 변수에 담음
 	    if(searchTerminalDto == null || searchTerminalDto.isEmpty()) {
 	    	// 담은 내용이 없거나 비어있으면 못찾음 리턴
@@ -47,6 +48,18 @@ public class ReservationController {
 	    }
 	    // 있으면 searchTerminalDto를 body에 담아서 준다
 	    return ResponseEntity.ok().body(searchTerminalDto);
+	}
+	@PostMapping("/end")
+	public ResponseEntity<List<FilterTerminalVO>> searchEnd(@RequestBody Map<String, Integer > requestBody) {
+	    int terminalId = requestBody.get("terminalId"); // 필요한건 terminalRegion 라는 이름으로 들어온 정보
+	    List<FilterTerminalVO> searchFilter = reservationDao.selectEndList(terminalId);
+	    // requestBody로 받은 terminalRegion의 정보를 DB에서 불러오는 구문을 실행하여 변수에 담음
+	    if(searchFilter == null || searchFilter.isEmpty()) {
+	    	// 담은 내용이 없거나 비어있으면 못찾음 리턴
+	        return ResponseEntity.notFound().build();
+	    }
+	    // 있으면 searchTerminalDto를 body에 담아서 준다
+	    return ResponseEntity.ok().body(searchFilter);
 	}
 
 	

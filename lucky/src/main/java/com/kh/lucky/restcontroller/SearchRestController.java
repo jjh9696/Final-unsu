@@ -31,6 +31,11 @@ public class SearchRestController {
 		System.out.println("컨트롤러에서 확인"+request);
 		return searchDao.selectList(request);
 	}
+	
+	
+	
+	
+	
 	//조회 전체
 //	@PostMapping("/")
 //	public List<SearchVO> selectList(@RequestBody SearchVO VO){
