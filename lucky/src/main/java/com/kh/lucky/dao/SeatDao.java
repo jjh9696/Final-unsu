@@ -29,6 +29,11 @@ public class SeatDao {
 		return sqlSession.selectOne("seat.find",seatNo);
 	}
 	
+	//버스 번호에 대한 좌석 뽑기
+	public List<SeatDto>busNoBySeat(int busNo){
+		return sqlSession.selectList("seat.busNoBySeat",busNo);
+	}
+	
 	//목록 조회
 	public List<SeatDto> selectList(){
 		return sqlSession.selectList("seat.list");

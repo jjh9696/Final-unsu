@@ -40,7 +40,12 @@ public class SeatRestController {
 		return seatDao.selectOne(sequence);
 	}
 	
-	// 전체 조회
+//	// 버스 번호에 따른 좌석 리스트
+//	@GetMapping("/{busNo}/seat")
+//	public List<SeatDto> selectList(@PathVariable int busNo){
+//		return seatDao.busNoBySeat(busNo);
+//	}
+	
 	@GetMapping("/")
 	public List<SeatDto> selectList(){
 		return seatDao.selectList();
@@ -48,7 +53,7 @@ public class SeatRestController {
 	
 	//조회단일
 	@GetMapping("/{seatNo}")
-	public ResponseEntity<SeatDto> find(@PathVariable int seatNo){
+	public ResponseEntity<SeatDto> find(@PathVariable int seatNo ){
 		SeatDto seatDto =seatDao.selectOne(seatNo);
 		if(seatDto ==null) {
 			return ResponseEntity.notFound().build();
