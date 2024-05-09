@@ -40,11 +40,11 @@ public class SeatRestController {
 		return seatDao.selectOne(sequence);
 	}
 	
-//	// 버스 번호에 따른 좌석 리스트
-//	@GetMapping("/{busNo}/seat")
-//	public List<SeatDto> selectList(@PathVariable int busNo){
-//		return seatDao.busNoBySeat(busNo);
-//	}
+	// 버스 번호에 따른 좌석 리스트
+	@GetMapping("/{busNo}/seat")
+	public List<SeatDto> selectList(@PathVariable int busNo){
+		return seatDao.busNoBySeat(busNo);
+	}
 	
 	@GetMapping("/")
 	public List<SeatDto> selectList(){
