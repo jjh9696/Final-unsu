@@ -1,6 +1,8 @@
 package com.kh.lucky.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,4 +60,12 @@ public class TerminalDao {
 	public int count() {
 		return sqlSession.selectOne("terminal.count");
 	}
+	
+	//목록 페이징
+    public List<TerminalDto> listByPaging( int beginRow, int endRow) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("beginRow", beginRow);
+        data.put("endRow", endRow);
+        return sqlSession.selectList("terminal.listByPaging", data);
+    }
 }

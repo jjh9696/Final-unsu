@@ -64,5 +64,26 @@
         FROM bus
         WHERE bus_no = #{busNo}
     </select>
+    
+    
+    <!-- 목록 개수 -->
+	<select id="count" resultType="int">
+		select count(*) from terminal
+	</select>
+	
+	<!-- 상단 -->
+	<sql id="top-n-header">
+	    <if test="beginRow != null and endRow != null">
+	    	select * from (
+	        	select rownum rn, TMP.* from (
+	    </if>
+	</sql>
+	<!-- 하단 -->
+	<sql id="top-n-footer">
+	    <if test="beginRow != null and endRow != null">
+		        )TMP
+		    ) where rn between #{beginRow} and #{endRow}
+	    </if>
+	</sql>
 	
 </mapper>

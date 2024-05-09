@@ -59,4 +59,15 @@ public class RouteDao {
 	}
 	
 	
+//	public List<RouteTimesVO> getTimeList() {
+//	    return sqlSession.selectList("route.getTimeList");
+//	}
+	
+	//vo검색리스트
+//	public List<RouteTimesVO> getTimeList(int routeStart, int routeEnd){
+//		Map<String, Integer> data = new HashMap<>();
+//		data.put("routeStart", routeStart);
+//		data.put("routeEnd", routeEnd);
+//		return sqlSession.selectList("route.getTimeList", data);
+//	}
 }
