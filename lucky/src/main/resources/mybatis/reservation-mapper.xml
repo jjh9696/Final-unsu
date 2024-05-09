@@ -57,9 +57,19 @@
 		delete reservation where reservation_no = #{reservationNo}
 	</delete>
 	
-		<select id="list" resultType="TerminalDto">
+	<select id="list" resultType="TerminalDto">
 		  SELECT * FROM TERMINAL WHERE TERMINAL_REGION LIKE 
 		  '%' || #{terminalRegion} || '%'
+	</select>
+	
+	<select id="filterList" resultType="FilterTerminalVO">
+		SELECT end_terminal.TERMINAL_ID, MIN(end_terminal.TERMINAL_NAME) AS TERMINAL_NAME
+		FROM TERMINAL start_terminal
+		JOIN route ON route.ROUTE_START = start_terminal.TERMINAL_ID
+		JOIN TERMINAL end_terminal ON end_terminal.TERMINAL_ID = route.ROUTE_END
+		WHERE start_terminal.TERMINAL_ID LIKE #{terminalId}
+		AND route.ROUTE_END IS NOT NULL
+		GROUP BY end_terminal.TERMINAL_ID
 	</select>
 	
 	<select id="terminalList" resultType="TerminalDto">

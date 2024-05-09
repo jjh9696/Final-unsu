@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.lucky.dto.ReservationDto;
 import com.kh.lucky.dto.TerminalDto;
+import com.kh.lucky.vo.FilterTerminalVO;
 
 @Repository
 public class ReservationDao {
@@ -49,10 +50,15 @@ public class ReservationDao {
 
 	// 예약조회하기 위한 테이블을 띄우는 dao준비
 
-	// 터미널 정보 불러오기
-	public List<TerminalDto> selectList(String terminalRegion) {
+	// 터미널 정보 불러오기 이거 필터링해서 불러오게 개조해야함
+	public List<TerminalDto> selectStartList(String terminalRegion) {
 		return sqlSession.selectList("reservation.list", terminalRegion);
 	}
+	// 
+	public List<FilterTerminalVO> selectEndList(int terminalId) {
+		return sqlSession.selectList("reservation.filterList", terminalId);
+	}
+
 
 	// 터미널 정보를 중복제거하여 불러오기
 	public List<TerminalDto> selectListTerminal() {
