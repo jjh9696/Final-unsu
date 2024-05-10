@@ -12,5 +12,5 @@ public class ChargeDto {
 	private int chargePassenger;
 	private String gradeType;
 	private int busNo;
-	private int chargePay;
+	private int chargePrice;
 }
