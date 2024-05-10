@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="message">
+
+	<!-- 등록 -->
+	<select id="sequence" resultType="int">
+		select message_seq.nextval from
+		dual
+	</select>
+	<insert id="add">
+		insert into message(
+		message_no,
+		message_sender,
+		message_receiver,
+		message_content, 
+		message_time
+		)
+		values(
+		#{messageNo},
+		#{messageSender},
+		#{messageReceiver},
+		#{messageContent}, 
+		sysdate
+		)
+	</insert>
+
+	<!-- 목록 -->
+	<select id="list" resultType="MessageDto">
+		select * from message order by
+		message_no asc
+	</select>
+
+	<!-- 상세 -->
+	<select id="find" resultType="MessageDto">
+		select * from message where
+		message_no = #{messageNo}
+	</select>
+
+	<!-- 받고 보낸 메세지 -->
+	<!-- <select id="findMessage" resultType="MessageDto"> SELECT * FROM message 
+		WHERE message_sender = #{memberId} OR message_receiver = #{memberId} </select> -->
+
+</mapper>
