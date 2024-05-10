@@ -33,6 +33,10 @@ public class SeatDao {
 	public List<SeatDto>busNoBySeat(int busNo){
 		return sqlSession.selectList("seat.busNoBySeat",busNo);
 	}
+	// 좌석테이블에 예약번호 조인
+	public List<SeatDto>reservationNoBySeat(){
+		return sqlSession.selectList("seat.reservationNoBySeat");
+	}
 	
 	//목록 조회
 	public List<SeatDto> selectList(){

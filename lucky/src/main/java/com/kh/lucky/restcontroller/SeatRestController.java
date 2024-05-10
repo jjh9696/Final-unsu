@@ -46,9 +46,10 @@ public class SeatRestController {
 		return seatDao.busNoBySeat(busNo);
 	}
 	
-	@GetMapping("/")
-	public List<SeatDto> selectList(){
-		return seatDao.selectList();
+	//시트 테이블에 예약번호 조인
+	@GetMapping("/reservation")
+	public List<SeatDto> selectListbyreservation(){
+		return seatDao.reservationNoBySeat();
 	}
 	
 	//조회단일

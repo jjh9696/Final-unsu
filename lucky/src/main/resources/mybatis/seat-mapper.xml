@@ -29,6 +29,11 @@
    	  SELECT * FROM seat WHERE bus_no = #{busNo}
    	</select>
    	
+   	<select id="reservationNoBySeat" resultType="SeatDto">
+   		SELECT * FROM seat s
+     INNER JOIN reservation r ON s.seat_no = r.seat_no
+   	</select>
+   	
    	<select id="find" resultType="SeatDto">
    		select * from seat where seat_no
    		= #{seatNo}
@@ -42,8 +47,10 @@
    	where seat_no =#{seatNo}
    	</update>
    	
+   	
+   	
    	<update id="edit">
-   		update route
+   		update seat
    		<set>
    		<if test="seatRow !=null">seat_row=#{seatRow},</if>
    		<if test="seatColumn !=null">seat_column=#{seatColumn},</if>
