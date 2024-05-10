@@ -67,12 +67,12 @@
 		delete route where route_no = #{routeNo}
 	</delete>
 
-	<!-- 출발,도착시간 시간양식으로 출력하기 -->
+	<!-- 출발,도착시간 시간양식으로 출력하기 --><!-- 
 	<select id="getTime" resultType="RouteTimesVO">
 		SELECT route_start, route_end, 
 		TO_CHAR(route_start_time, 'HH24:MI') AS route_start_time,
 		TO_CHAR(route_end_time, 'HH24:MI') AS route_end_time
 		FROM route WHERE route_start = #{routeStart}
-	</select>
+	</select> -->
 
 </mapper>
