@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.lucky.dao.SeatDao;
 import com.kh.lucky.dto.SeatDto;
+import com.kh.lucky.vo.ReservationSeatVO;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,15 +41,16 @@ public class SeatRestController {
 		return seatDao.selectOne(sequence);
 	}
 	
-	// 버스 번호에 따른 좌석 리스트
-	@GetMapping("/{busNo}/seat")
-	public List<SeatDto> selectList(@PathVariable int busNo){
-		return seatDao.busNoBySeat(busNo);
+	// 노선 번호에 따른 좌석 리스트
+	@GetMapping("/{routeNo}/seat")
+	public List<SeatDto> selectList(@PathVariable int routeNo){
+		return seatDao.busNoBySeat(routeNo);
 	}
 	
-	@GetMapping("/")
-	public List<SeatDto> selectList(){
-		return seatDao.selectList();
+	//시트 테이블에 예약번호 조인
+	@GetMapping("/reservation/{routeNo}")
+	public List<ReservationSeatVO> selectListbyreservation(@PathVariable int routeNo){
+		return seatDao.reservationNoBySeat(routeNo);
 	}
 	
 	//조회단일

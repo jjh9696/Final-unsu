@@ -116,6 +116,9 @@ public class TerminalRestController {
 //				.count(count) // 전체 개수 설정
 //				.build();
 //
-//		return TerminalDto.builder();
+//		return TerminalDto.builder()
+//				.
+//				.pageVO(pageVO)
+//				.build();
 //	}
 }
