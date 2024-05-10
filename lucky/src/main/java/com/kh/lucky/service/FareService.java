@@ -2,11 +2,9 @@ package com.kh.lucky.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.kh.lucky.dao.ChargeDao;
 import com.kh.lucky.dao.RouteDao;
-import com.kh.lucky.vo.RequestChargeVO;
 import com.kh.lucky.dto.ChargeDto;
 import com.kh.lucky.dto.RouteDto;
 
@@ -43,4 +41,24 @@ public class FareService {
 	        System.out.println("차지번호 : "+chargeDto);
 	        return totalFare; // 계산된 총 요금 반환
 	    }
+
+	
+	  //좌석 선택 시 요금 계산
+	public int gradeTypeFare(int chargeNo, int routeNo, int count) {
+		ChargeDto chargeDto = chargeDao.selectOne(chargeNo); // 요금 정보 조회
+        ChargeDto addChargeDto = chargeDao.selectOne(10);
+        RouteDto routeDto = routeDao.selectOne(routeNo);
+        
+        int additionalCharge = addChargeDto.getChargePrice(); // 100 이 들어있을것으로 예상
+        int baseFare = chargeDto.getChargePrice(); // 데이터베이스에서 가져온 기본 요금
+        int km = (int) routeDto.getRouteKm();
+        
+        int additionalFare = (int) (km * additionalCharge);
+        int totalFare = (baseFare + additionalFare) * count; 
+        System.out.println(count);
+        System.out.println(baseFare);
+        System.out.println(additionalFare);
+        
+        return totalFare;
+	}
 }

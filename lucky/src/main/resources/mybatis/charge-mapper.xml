@@ -8,6 +8,9 @@
     
 <mapper namespace="charge">
 	
+	<select id="sequence" resultType="int">
+		select charge_seq.nextval from dual
+	</select>
 		
 	<select id="list" resultType="ChargeDto">
 		select * from charge order by charge_no asc
@@ -17,5 +20,41 @@
 		select * from charge where charge_no = #{chargeNo}
 	</select>
 	
+	<insert id="add">
+		insert into charge(
+			charge_no, charge_type, charge_passenger,
+			grade_type, bus_no, charge_price
+		)
+		values(
+			#{chargeNo}, #{chargeType}, #{chargePassenger},
+			#{gradeType}, #{busNo}, #{chargePrice}
+		)
+	</insert>
+	
+	<update id="editAll">
+		update charge set
+			charge_type = #{chargeType},
+			charge_passenger = #{chargePassenger},
+			grade_type = #{gradeType},
+			bus_no = #{busNo},
+			charge_price = #{chargePrice}
+		where charge_no = #{chargeNo}
+	</update>
+	
+	<update id="edit">
+		update charge
+		<set>
+			<if test="chargeType != null">charge_type = #{chargeType},</if>
+			<if test="chargePassenger > 0">charge_passenger = #{chargePassenger},</if>
+			<if test="gradeType != null">grade_type = #{gradeType},</if>
+			<if test="busNo != null">bus_no = #{busNo},</if>
+			<if test="chargePrice > 0">charge_price = #{chargePrice}</if>
+		</set>
+		where charge_no = #{chargeNo}
+	</update>
+	
+	<delete id="delete">
+		delete charge where charge_no = #{chargeNo}
+	</delete>
 	
 </mapper>

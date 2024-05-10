@@ -34,4 +34,7 @@ public class MemberDao {
 		// TODO Auto-generated method stub
 		
 	}
+	public List<MemberDto> selectMemberIdList(){
+		return sqlSession.selectList("member.listMemberId");
+	}
 }
