@@ -20,7 +20,7 @@
 		)
 		values(
 			#{reviewNo}, #{reviewTitle}, #{reviewContent},
-			sysdate, #{review_writer}, #{reviewViewCount},
+			sysdate, #{reviewWriter}, #{reviewViewCount},
 			#{reviewStar}
 		)
 	</insert>
@@ -33,6 +33,35 @@
 	<!-- 키워드 검색 -->
 	<select id="find" resultType="ReviewDto">
 		select * from review where review_no = #{reviewNo}
+	</select>
+	
+	<!-- 무한스크롤 -->
+	<select id="listByPaging" resultType="ReviewDto">
+		<include refid="top-n-header"></include>
+		select * from review order by review_wtime desc
+		<include refid="top-n-footer"></include>
+	</select>
+	
+	<!-- 상단 -->
+	<sql id="top-n-header">
+	    <if test="beginRow != null and endRow != null">
+	    select * from (
+	        select rownum rn, TMP.* from (
+	    </if>
+	</sql>
+	
+	<!-- Top N Query 적용 -->
+	<!-- 하단 -->
+	<sql id="top-n-footer">
+	    <if test="beginRow != null and endRow != null">
+	        )TMP
+	    ) where rn between #{beginRow} and #{endRow}
+	    </if>
+	</sql>	
+	
+	<!-- 후기 총 개수 -->
+	<select id="count" resultType="int">
+		select count(*) from review
 	</select>
 	
 	
