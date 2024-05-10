@@ -19,7 +19,7 @@ public class FareService {
 	
 	  public int calculateFare(int chargeNo, int routeNo) {
 	        ChargeDto chargeDto = chargeDao.selectOne(chargeNo); // 요금 정보 조회
-	        ChargeDto addChargeDto = chargeDao.selectOne(62);
+	        ChargeDto addChargeDto = chargeDao.selectOne(10);
 	        RouteDto routeDto = routeDao.selectOne(routeNo);
 	        System.out.println("요금번호 : "+chargeNo);
 	        if (chargeDto == null) {
