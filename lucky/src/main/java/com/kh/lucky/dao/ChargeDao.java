@@ -6,7 +6,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.kh.lucky.dto.BusDto;
 import com.kh.lucky.dto.ChargeDto;
 import com.kh.lucky.vo.RequestChargeVO;
 
@@ -23,6 +22,11 @@ public class ChargeDao {
 
 	public List<RequestChargeVO> selectPrice() {
 		return sqlSession.selectOne("charge.find");
+	}
+	
+	//전체 조회
+	public List<ChargeDto> selectList(){
+		return sqlSession.selectList("charge.list");
 	}
 
 	// 삭제

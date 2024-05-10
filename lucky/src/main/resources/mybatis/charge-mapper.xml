@@ -23,11 +23,11 @@
 	<insert id="add">
 		insert into charge(
 			charge_no, charge_type, charge_passenger,
-			grade_type, bus_no, charge_price
+			grade_type, charge_price
 		)
 		values(
 			#{chargeNo}, #{chargeType}, #{chargePassenger},
-			#{gradeType}, #{busNo}, #{chargePrice}
+			#{gradeType}, #{chargePrice}
 		)
 	</insert>
 	
@@ -47,7 +47,6 @@
 			<if test="chargeType != null">charge_type = #{chargeType},</if>
 			<if test="chargePassenger > 0">charge_passenger = #{chargePassenger},</if>
 			<if test="gradeType != null">grade_type = #{gradeType},</if>
-			<if test="busNo != null">bus_no = #{busNo},</if>
 			<if test="chargePrice > 0">charge_price = #{chargePrice}</if>
 		</set>
 		where charge_no = #{chargeNo}

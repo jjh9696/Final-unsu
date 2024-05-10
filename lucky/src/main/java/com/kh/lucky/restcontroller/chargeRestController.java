@@ -1,11 +1,16 @@
 package com.kh.lucky.restcontroller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,24 +33,63 @@ public class chargeRestController {
 
 	@GetMapping("/{chargeNo}/{routeKm}")
 	public ResponseEntity<Integer> calculateFare(@PathVariable int chargeNo, @PathVariable int routeKm) {
-	    int fare = fareService.calculateFare(chargeNo, routeKm);
-	    System.out.println(routeKm);
-	    System.out.println(chargeNo);
-	    return ResponseEntity.ok(fare);
+		int fare = fareService.calculateFare(chargeNo, routeKm);
+		System.out.println(routeKm);
+		System.out.println(chargeNo);
+		return ResponseEntity.ok(fare);
 	}
-	//요금번호,노선번호,인원수 대로 
+
+	// 요금번호,노선번호,인원수 대로
 	@GetMapping("/{chargeNo}/{routeNo}/{count}")
-	public ResponseEntity<Integer> gradeTypeFare(@PathVariable int chargeNo, @PathVariable int routeNo, @PathVariable int count){
+	public ResponseEntity<Integer> gradeTypeFare(@PathVariable int chargeNo, @PathVariable int routeNo,
+			@PathVariable int count) {
 		int total = fareService.gradeTypeFare(chargeNo, routeNo, count);
 		return ResponseEntity.ok(total);
 	}
-	
-	//등록
+
+	// 등록
 	@PostMapping("/")
-	public ChargeDto inser(@RequestBody ChargeDto chargeDto){
+	public ChargeDto inser(@RequestBody ChargeDto chargeDto) {
 		int sequence = chargeDao.sequence();
 		chargeDto.setChargeNo(sequence);
 		chargeDao.insert(chargeDto);
 		return chargeDao.selectOne(sequence);
+	}
+
+	// 전체 수정
+	@PutMapping("/")
+	public ResponseEntity<?> editAll(@RequestBody ChargeDto chargeDto) {
+		boolean result = chargeDao.editAll(chargeDto);
+		if (result == false) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().build();
+	}
+
+	// 일부수정
+	@PatchMapping("/")
+	public ResponseEntity<?> edit(@RequestBody ChargeDto chargeDto) {
+		boolean result = chargeDao.edit(chargeDto);
+		if (result == false) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().build();
+	}
+
+	// 삭제
+	@DeleteMapping("/{chargeNo}")
+	public ResponseEntity<?> delete(@PathVariable int chargeNo) {
+		ChargeDto chargeDto = chargeDao.selectOne(chargeNo);
+		boolean result = chargeDao.delete(chargeNo);
+		if (result == false) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(chargeDto);
+	}
+	
+	//전체 리스트
+	@GetMapping("/")
+	public List<ChargeDto> list(){
+		return chargeDao.selectList();
 	}
 }
