@@ -1,6 +1,8 @@
 package com.kh.lucky.restcontroller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -68,7 +70,7 @@ public class RouteRestController {
 	// 일부수정
 	@PatchMapping("/")
 	public ResponseEntity<?> edit(@RequestBody RouteDto routeDto) {
-		boolean result = routeDao.editAll(routeDto);
+		boolean result = routeDao.edit(routeDto);
 		if (result == false) {
 			return ResponseEntity.notFound().build();
 		}
@@ -85,4 +87,18 @@ public class RouteRestController {
 		}
 		return ResponseEntity.ok().body(routeDto);
 	}
+	
+	//시간조회
+//	@GetMapping("/time")
+//	public List<RouteTimesVO> getTimeList() {
+//		return routeDao.getTimeList();
+//	}
+//	@GetMapping("/time/{routeStart}/{routeEnd}")
+//	public ResponseEntity<List<RouteTimesVO>> getTimeList(@PathVariable int routeStart, @PathVariable int routeEnd){
+//		List<RouteTimesVO> routeTimes = routeDao.getTimeList(routeStart, routeEnd);
+//		 if(routeTimes == null) {
+//		        return ResponseEntity.notFound().build();
+//		    }
+//		    return ResponseEntity.ok().body(routeTimes);
+//		}
 }

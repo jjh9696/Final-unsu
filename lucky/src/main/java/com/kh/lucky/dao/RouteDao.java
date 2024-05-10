@@ -8,6 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.lucky.dto.RouteDto;
 
+import com.kh.lucky.vo.RequestChargeVO;
+import com.kh.lucky.vo.RouteTimesVO;
+
+
 @Repository
 public class RouteDao {
 
@@ -48,4 +52,22 @@ public class RouteDao {
 	public boolean delete(int routeNo) {
 		return sqlSession.delete("route.delete", routeNo) > 0;
 	}
+	
+	//VO 리스트
+	public List<RouteTimesVO> getTimeList() {
+	    return sqlSession.selectList("route.getTimeList");
+	}
+	
+	
+//	public List<RouteTimesVO> getTimeList() {
+//	    return sqlSession.selectList("route.getTimeList");
+//	}
+	
+	//vo검색리스트
+//	public List<RouteTimesVO> getTimeList(int routeStart, int routeEnd){
+//		Map<String, Integer> data = new HashMap<>();
+//		data.put("routeStart", routeStart);
+//		data.put("routeEnd", routeEnd);
+//		return sqlSession.selectList("route.getTimeList", data);
+//	}
 }

@@ -14,6 +14,7 @@ public class ReservationDto {
 	private Date reservationTime;
 	private String memberId;
 	private String gradeType;
+	private int routeNo;
 	private int busNo;
 	private int seatNo;	
 }

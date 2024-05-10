@@ -54,5 +54,35 @@
         FROM terminal
         WHERE terminal_id = #{terminalId}
     </select>
+    
+    
+    
+    <!-- 목록 개수 -->
+	<select id="count" resultType="int">
+		select count(*) from terminal
+	</select>
+	
+	<!-- 검색 페이징 -->
+	<select id="listByPaging" resultType="TerminalDto">
+		<include refid="top-n-header"></include>
+            select * from terminal
+            order by terminal.terminal_id asc
+		<include refid="top-n-footer"></include>
+	</select>
+	
+	<!-- 상단 -->
+	<sql id="top-n-header">
+	    <if test="beginRow != null and endRow != null">
+	    	select * from (
+	        	select rownum rn, TMP.* from (
+	    </if>
+	</sql>
+	<!-- 하단 -->
+	<sql id="top-n-footer">
+	    <if test="beginRow != null and endRow != null">
+		        )TMP
+		    ) where rn between #{beginRow} and #{endRow}
+	    </if>
+	</sql>
 	
 </mapper>
