@@ -56,8 +56,8 @@
 		<set>
 			<if test="routeTime != null">route_time = #{routeTime},</if>
 			<if test="routeKm > 0">route_km = #{routeKm},</if>
-			<if test="routeStartTime != null">route_start_time = TO_date(#{routeStartTime}, 'YYYY-MM-DD HH24:MI'),</if>
-			<if test="routeEndTime != null">route_end_time = TO_date(#{routeEndTime}, 'YYYY-MM-DD HH24:MI'),</if>
+			<if test="routeStartTime != null">route_start_time = TO_date(#{routeStartTime}, 'YYYY-MM-DD HH24:MI:SS'),</if>
+			<if test="routeEndTime != null">route_end_time = TO_date(#{routeEndTime}, 'YYYY-MM-DD HH24:MI:SS'),</if>
 			<if test="routeStart != null">route_start = #{routeStart},</if>
 			<if test="routeEnd != null">route_end = #{routeEnd},</if>
 			<if test="routeWay != null">route_way = #{routeWay}</if>
