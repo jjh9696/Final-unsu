@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.lucky.dto.SeatDto;
+import com.kh.lucky.vo.ReservationSeatVO;
 
 @Repository
 public class SeatDao {
@@ -34,8 +35,8 @@ public class SeatDao {
 		return sqlSession.selectList("seat.busNoBySeat",busNo);
 	}
 	// 좌석테이블에 예약번호 조인
-	public List<SeatDto>reservationNoBySeat(){
-		return sqlSession.selectList("seat.reservationNoBySeat");
+	public List<ReservationSeatVO> reservationNoBySeat(int routeNo){
+		return sqlSession.selectList("seat.reservationNoBySeat",routeNo);
 	}
 	
 	//목록 조회
