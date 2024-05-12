@@ -19,6 +19,9 @@
 	<select id="find" resultType="ChargeDto">
 		select * from charge where charge_no = #{chargeNo}
 	</select>
+	<select id="findByAge" resultType="ChargeDto">
+		select * from charge where charge_type = #{chargeType}
+	</select>
 	
 	<insert id="add">
 		insert into charge(
