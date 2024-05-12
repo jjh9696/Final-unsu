@@ -19,6 +19,9 @@ public class ChargeDao {
 	public ChargeDto selectOne(int chargeNo) {
 		return sqlSession.selectOne("charge.find", chargeNo);
 	}
+	public List<ChargeDto> selectOneByAge(String chargeType) {
+		return sqlSession.selectList("charge.findByAge", chargeType);
+	}
 
 	public List<RequestChargeVO> selectPrice() {
 		return sqlSession.selectOne("charge.find");

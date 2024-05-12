@@ -40,10 +40,10 @@ public class chargeRestController {
 	}
 
 	// 요금번호,노선번호,인원수 대로
-	@GetMapping("/{chargeNo}/{routeNo}/{count}")
-	public ResponseEntity<Integer> gradeTypeFare(@PathVariable int chargeNo, @PathVariable int routeNo,
+	@GetMapping("/{chargeType}/{routeNo}/{count}")
+	public ResponseEntity<Integer> gradeTypeFare(@PathVariable String chargeType, @PathVariable int routeNo,
 			@PathVariable int count) {
-		int total = fareService.gradeTypeFare(chargeNo, routeNo, count);
+		int total = fareService.gradeTypeFare(chargeType, routeNo, count);
 		return ResponseEntity.ok(total);
 	}
 
