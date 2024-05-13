@@ -73,21 +73,27 @@ public class PointRestController {
 		return ResponseEntity.ok().build();
 	}
 	
-	//등록
-	@PostMapping("/{memberId}/{pointAmount}")
-	public PointDto insert(@RequestHeader("Authorization") String token, int pointAmount) {
-	    // JWT 토큰을 파싱하여 memberId를 추출합니다.
-	    MemberLoginVO loginVO = jwtService.parse(token);
-		String memberId = loginVO.getMemberId();
-	    
-	    return pointService.waitPoint(memberId, pointAmount);
-	}
+	
+	@PostMapping("/")
+    public PointDto save(@RequestBody PointDto pointDto, @RequestHeader("Authorization") String token) {
+        //데이터 확인
+        System.out.println("서버에서 나오는지?");
+        System.out.println("pointNo: " + pointDto.getPointNo());
+        System.out.println("memberId: " + pointDto.getMemberId());
+        System.out.println("pointAmout: " + pointDto.getPointAmount());
 
-	//토큰 받아오고싶다
-//	@GetMapping("/")
-//	public List<PointDto> pointAllList(@RequestHeader("Authorization") String token) {
-//		MemberLoginVO loginVO = jwtService.parse(token);
-//		String memberId = loginVO.getMemberId();
-//	    return pointDao.selectList();
-//	}
+        String memberId = jwtService.parse(token).getMemberId();
+        
+        pointDto.setMemberId(memberId); // 사용자의 ID로 설정 (실제 사용자 ID를 설정해야 함)
+
+        //시퀀스 번호 생성
+        int sequence = pointDao.sequence();
+        //번호 설정
+        pointDto.setPointNo(sequence);
+        //등록
+        System.out.println("들어왓냐?"+memberId);
+        pointDao.insert(pointDto);
+        //결과 조회 반환
+        return pointDao.selectOne(sequence);
+    }
 }
