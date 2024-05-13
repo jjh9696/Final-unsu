@@ -22,5 +22,6 @@ public class MessageDto {
 	private Date messageTime;
 	private String messageSenderLevel;
 	private String messageReceiverLevel;
-
+	
 }
+

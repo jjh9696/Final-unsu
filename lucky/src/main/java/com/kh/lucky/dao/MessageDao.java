@@ -35,10 +35,14 @@ public class MessageDao {
 //		return sqlSession.selectOne("message.findMessage", memberId);
 //	}
 
-	// 사용자의 채팅 기록 여부를 확인하는 메서드
-	public boolean hasChatHistory(String memberId) {
-		int count = sqlSession.selectOne("message.hasChatHistory", memberId);
-		return count > 0;
-	}
+//    // 최근 메시지 보낸 사람 조회
+//    public String findRecentSender() {
+//        return sqlSession.selectOne("message.findRecentSender");
+//    }
+//
+//    // 최근 메시지 받은 사람 조회
+//    public String findRecentReceiver() {
+//        return sqlSession.selectOne("message.findRecentReceiver");
+//    }
 
 }

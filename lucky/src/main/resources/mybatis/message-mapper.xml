@@ -16,7 +16,7 @@
 		message_no,
 		message_sender,
 		message_receiver,
-		message_content, 
+		message_content,
 		message_time,
 		message_sender_level,
 		message_receiver_level
@@ -25,7 +25,7 @@
 		#{messageNo},
 		#{messageSender},
 		#{messageReceiver},
-		#{messageContent}, 
+		#{messageContent},
 		sysdate,
 		#{messageSenderLevel},
 		#{messageReceiverLevel}
@@ -44,8 +44,40 @@
 		message_no = #{messageNo}
 	</select>
 
-	<!-- 받고 보낸 메세지 -->
-	<!-- <select id="findMessage" resultType="MessageDto"> SELECT * FROM message 
-		WHERE message_sender = #{memberId} OR message_receiver = #{memberId} </select> -->
+	<!-- 최근 메시지 보낸 사람 조회 -->
+	<!-- <select id="findRecentSender" resultType="String">
+		SELECT message_sender
+		FROM (
+		SELECT
+		m1.*,
+		ROW_NUMBER() OVER (PARTITION BY m1.message_sender
+		ORDER BY m1.message_no DESC) AS
+		rn
+		FROM
+		message m1, message m2
+		WHERE
+		m1.message_sender = m2.message_receiver
+		AND m1.message_sender_level =
+		'일반회원'
+		) sub
+		WHERE rn = 1;
+	</select> -->
+
+	<!-- 최근 메시지 받은 사람 조회 -->
+	<!-- <select id="findRecentReceiver" resultType="String">
+		SELECT message_receiver
+		FROM (
+		SELECT
+		m1.*,
+		ROW_NUMBER() OVER (PARTITION BY m1.message_receiver ORDER BY m1.message_no DESC)
+		AS rn
+		FROM
+		message m1, message m2
+		WHERE
+		m1.message_receiver = m2.message_sender
+		AND m1.message_receiver_level = '일반회원'
+		) sub
+		WHERE rn = 1;
+	</select> -->
 
 </mapper>
