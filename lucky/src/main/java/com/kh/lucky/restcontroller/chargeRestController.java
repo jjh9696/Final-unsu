@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.lucky.dao.ChargeDao;
@@ -40,12 +41,15 @@ public class chargeRestController {
 	}
 
 	// 요금번호,노선번호,인원수 대로
-	@GetMapping("/{chargeType}/{routeNo}/{count}")
-	public ResponseEntity<Integer> gradeTypeFare(@PathVariable String chargeType, @PathVariable int routeNo,
-			@PathVariable int count) {
-		int total = fareService.gradeTypeFare(chargeType, routeNo, count);
-		return ResponseEntity.ok(total);
+	@GetMapping("/calculateFare")
+	public ResponseEntity<Integer> calculateFare(
+	    @RequestParam String chargeType,
+	    @RequestParam int routeNo,
+	    @RequestParam int count) {
+	    int total = fareService.gradeTypeFare(chargeType, routeNo, count);
+	    return ResponseEntity.ok(total);
 	}
+
 
 	// 등록
 	@PostMapping("/")
