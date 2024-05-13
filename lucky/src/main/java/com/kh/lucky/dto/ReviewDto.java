@@ -1,6 +1,7 @@
 package com.kh.lucky.dto;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,5 @@ public class ReviewDto {
 	private Date reviewWtime;
 	private String reviewWriter;
 	private int reviewViewCount;
-	private int reviewStar;
-	
+	private float reviewStar;
 }
