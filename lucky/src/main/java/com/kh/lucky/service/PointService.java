@@ -12,14 +12,14 @@ public class PointService {
 	@Autowired
 	private PointDao pointDao;
 	
-	public PointDto waitPoint(String loginId, int pointAmount) {
+	public PointDto waitPoint(String memberId, int pointAmount) {
 		int sequence = pointDao.sequence();
 		PointDto pointDto = new PointDto();
 	    pointDto.setPointNo(sequence);
-	    pointDto.setMemberId(loginId);
+	    pointDto.setMemberId(memberId);
 	    pointDto.setPointAmount(pointAmount);
 	    
-		pointDao.insertToken(sequence, loginId, pointAmount);
+		pointDao.insertToken(sequence, memberId, pointAmount);
 		System.out.println(pointDto);
 		return pointDto;
 	}

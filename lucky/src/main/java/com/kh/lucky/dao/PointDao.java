@@ -30,6 +30,11 @@ public class PointDao {
 	public PointDto selectOne(int pointNo) {
 		return sqlSession.selectOne("point.find", pointNo);
 	}
+	
+	//상태 목록
+	public List<PointDto> selectState(String pointState) {
+	    return sqlSession.selectList("point.pointStateList", pointState);
+	}
 
 	// 전체수정
 	public boolean editAll(PointDto pointDto) {
@@ -42,15 +47,15 @@ public class PointDao {
 	}
 	
 	//기존..등록
-//	public void insert(PointDto pointDto) {
-//		sqlSession.insert("point.add", pointDto);
-//	}
+	public void insert(PointDto pointDto) {
+		sqlSession.insert("point.add", pointDto);
+	}
 	//아이디 토큰으로 받아서 등록
 	public void insertToken(int pointNo, String memberId, int pointAmount) {
-		Map<String, Object> token = new HashMap<>();
-		token.put("pointNo", pointNo);
-		token.put("memberId", memberId);
-		token.put("pointAmount", pointAmount);
-		sqlSession.insert("point.add",token);
+		Map<String, Object> data = new HashMap<>();
+		data.put("pointNo", pointNo);
+		data.put("memberId", memberId);
+		data.put("pointAmount", pointAmount);
+		sqlSession.insert("point.add",data);
 	}
 }

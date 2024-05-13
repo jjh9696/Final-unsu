@@ -119,5 +119,12 @@ public class MemberRestcontroller {
 	}
 	
 	
-
+	//토큰 받아오고싶다
+	@GetMapping("/token/{memberId}")
+	public MemberDto selectMemberId(@RequestHeader("Authorization") String token) {
+		MemberLoginVO loginVO = jwtService.parse(token);
+		System.out.println("결과:"+loginVO);
+		String memberId = loginVO.getMemberId();
+	    return memberDao.selectOne(memberId);
+	}
 }

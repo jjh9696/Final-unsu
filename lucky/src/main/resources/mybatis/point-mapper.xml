@@ -24,6 +24,11 @@
 		select * from point order by point_time asc
 	</select>
 	
+	<!-- 상태에 따른 목록 출력 -->
+	<select id="pointStateList" resultType="pointDto">
+		select * from point where point_state = #{pointState} order by point_time asc
+	</select>
+	
 	<select id="find" resultType="pointDto">
 		select * from point where point_no = #{pointNo}
 	</select>
@@ -33,10 +38,7 @@
 	</update>
 	
 	<update id="edit">
-		update point
-		<set>
-			<if test="pointState != null">point_state = #{pointState}</if>
-		</set>
+		update point set point_state = #{pointState}
 		where point_no = #{pointNo}
 	</update>
 	

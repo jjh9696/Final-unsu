@@ -42,10 +42,15 @@ public class PointRestController {
 		return pointDao.selectList();
 	}
 
-	// 찾아서 조회
+	//번호 찾아서 조회
 	@GetMapping("/{pointNo}")
 	public PointDto selectOne(@PathVariable int pointNo) {
 		return pointDao.selectOne(pointNo);
+	}
+	//상태찾아서 조회
+	@GetMapping("/state/{pointState}")
+	public List<PointDto> selectList(@PathVariable String pointState) {
+		return pointDao.selectState(pointState);
 	}
 
 	// 전체 수정
@@ -69,13 +74,13 @@ public class PointRestController {
 	}
 	
 	//등록
-	@PostMapping("/{loginId}/{pointAmount}")
+	@PostMapping("/{memberId}/{pointAmount}")
 	public PointDto insert(@RequestHeader("Authorization") String token, int pointAmount) {
 	    // JWT 토큰을 파싱하여 memberId를 추출합니다.
 	    MemberLoginVO loginVO = jwtService.parse(token);
-		String loginId = loginVO.getMemberId();
+		String memberId = loginVO.getMemberId();
 	    
-	    return pointService.waitPoint(loginId, pointAmount);
+	    return pointService.waitPoint(memberId, pointAmount);
 	}
 
 	//토큰 받아오고싶다
