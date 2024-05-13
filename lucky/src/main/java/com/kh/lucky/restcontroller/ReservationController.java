@@ -31,6 +31,7 @@ public class ReservationController {
 	@Autowired
 	private ReservationDao reservationDao;
 	
+	
 	//조회
 	@GetMapping("/")
 	public List<TerminalDto> list(){
@@ -54,6 +55,15 @@ public class ReservationController {
 		return reservationDao.selectEndList(terminalDto);
 	}
 	
+	// 예약 인서트하는 매핑
+	@PostMapping("/save")
+	public ReservationDto save(@RequestBody ReservationDto reservationDto) {
+		int sequence = reservationDao.sequence();
+		reservationDto.setReservationNo(sequence);
+		reservationDao.save(reservationDto);
+		System.out.println("이건나오니?"+reservationDto);
+		return reservationDao.selectOne(sequence);
+	}
 	
 	
 	
