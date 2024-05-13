@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.lucky.dao.ChargeDao;
 import com.kh.lucky.dto.ChargeDto;
 import com.kh.lucky.service.FareService;
+import com.kh.lucky.vo.RequestChargeVO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -41,14 +42,13 @@ public class chargeRestController {
 	}
 
 	// 요금번호,노선번호,인원수 대로
-	@GetMapping("/calculateFare")
-	public ResponseEntity<Integer> calculateFare(
-	    @RequestParam String chargeType,
-	    @RequestParam int routeNo,
-	    @RequestParam int count) {
-	    int total = fareService.gradeTypeFare(chargeType, routeNo, count);
+	@PostMapping("/calculateFare")
+	public ResponseEntity<Integer> calculateFare(@RequestBody RequestChargeVO requestChargeVO) {
+	    int total = fareService.gradeTypeFare(requestChargeVO.getChargeType(), requestChargeVO.getRouteNo(), requestChargeVO.getCount());
+	    System.out.println("토탈은?"+total);
 	    return ResponseEntity.ok(total);
 	}
+
 
 
 	// 등록

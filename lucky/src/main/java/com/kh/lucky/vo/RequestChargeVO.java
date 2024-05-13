@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data @AllArgsConstructor @Builder @NoArgsConstructor
 public class RequestChargeVO {
-	private int routeNo;
-	private int routeKm;
-	private int chargePay;
+	  private String chargeType;
+	  private int routeNo;
+	  private int count;
 }

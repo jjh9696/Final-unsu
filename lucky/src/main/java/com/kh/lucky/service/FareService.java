@@ -28,7 +28,7 @@ public class FareService {
 		ChargeDto chargeDto = chargeDao.selectOne(chargeNo); // 요금 정보 조회
 		ChargeDto addChargeDto = chargeDao.selectOne(10);
 		RouteDto routeDto = routeDao.selectOne(routeNo);
-		System.out.println("요금번호 : " + chargeNo);
+//		System.out.println("요금번호 : " + chargeNo);
 		if (chargeDto == null) {
 			throw new RuntimeException("Charge info not found!");
 		}
@@ -40,12 +40,12 @@ public class FareService {
 		// 여기서는 예를 들어 거리당 요금이 KM당 100원이라고 가정
 		int additionalFare = (int) (km * additionalCharge);
 		int totalFare = baseFare + additionalFare;
-		System.out.println("기본금액 : " + baseFare);
-		System.out.println("총금액 : " + totalFare);
-		System.out.println("추가거리 : " + km);
-		System.out.println("추가금액 : " + additionalFare);
-		System.out.println("루트번호 : " + routeDto);
-		System.out.println("차지번호 : " + chargeDto);
+//		System.out.println("기본금액 : " + baseFare);
+//		System.out.println("총금액 : " + totalFare);
+//		System.out.println("추가거리 : " + km);
+//		System.out.println("추가금액 : " + additionalFare);
+//		System.out.println("루트번호 : " + routeDto);
+//		System.out.println("차지번호 : " + chargeDto);
 		return totalFare; // 계산된 총 요금 반환
 	}
 

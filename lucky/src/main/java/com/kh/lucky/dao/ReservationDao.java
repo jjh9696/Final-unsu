@@ -25,7 +25,10 @@ public class ReservationDao {
 	public void insert(ReservationDto reservationDto) {
 		sqlSession.insert("reservation.insert", reservationDto);
 	}
-
+	// 예약 등록
+	public void save(ReservationDto reservationDto) {
+		sqlSession.insert("reservation.save",reservationDto);
+	}
 	
 	// 조회 전체
 	public List<ReservationDto> selectList() {

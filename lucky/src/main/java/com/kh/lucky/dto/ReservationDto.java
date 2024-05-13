@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class ReservationDto {
 	private int reservationNo;
-	private Date reservationDate;
-	private Date reservationTime;
+	private String reservationDate;
+	private String reservationTime;
 	private String memberId;
 	private String gradeType;
 	private int routeNo;
