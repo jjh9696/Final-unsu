@@ -47,6 +47,20 @@ public class MemberChatWebSocketServer extends TextWebSocketHandler {
 		TextMessage memberListMessage = new TextMessage(jsonMemberList);
 		session.sendMessage(memberListMessage);
 
+//		// 최근 메세지 보낸사람, 받은사람 전송
+//		String recentSender = messageDao.findRecentSender();
+//		String recentReceiver = messageDao.findRecentReceiver();
+//
+//		if (recentSender != null) {
+//			TextMessage recentSenderMessage = new TextMessage(recentSender);
+//			session.sendMessage(recentSenderMessage);
+//		}
+//
+//		if (recentReceiver != null) {
+//			TextMessage recentReceiverMessage = new TextMessage(recentReceiver);
+//			session.sendMessage(recentReceiverMessage);
+//		}
+
 		// 이전 메시지 조회 및 전송
 		List<MessageDto> messageList = messageDao.selectList();
 		for (MessageDto messageDto : messageList) {
@@ -74,30 +88,34 @@ public class MemberChatWebSocketServer extends TextWebSocketHandler {
 			String receiverId = requestVO.getReceiverId();
 
 			MessageDto messageDto = messageDao.insert(MessageDto.builder().messageSender(memberId)
-					.messageReceiver(receiverId).messageContent(requestVO.getContent())
-					.messageSenderLevel(memberLevel).messageReceiverLevel("일반회원")
-					.build());
+					.messageReceiver(receiverId).messageContent(requestVO.getContent()).messageSenderLevel(memberLevel)
+					.messageReceiverLevel("일반회원").build());
 
 			String json = mapper.writeValueAsString(messageDto);
 			TextMessage response = new TextMessage(json);
-			session.sendMessage(response);
+
+			// 모든 사용자에게 메시지 전송
+			for (WebSocketSession userSession : users) {
+				userSession.sendMessage(response);
+			}
 
 		}
 		// 관리자가 아니면 문의 전용 관리자에게 메세지 전송
 		else {
-			String adminUserId = "adminuser1"; // 관리자 아이디 (DB에만 저장되는 값 / 그냥 관리자 한테 보냈다는 걸 알림) 
+			String adminUserId = "ADMIN"; // 관리자 아이디 (DB에만 저장되는 값 / 그냥 관리자 한테 보냈다는 걸 알림)
 
 			// 메시지 생성 및 전송
 			MessageDto messageDto = messageDao.insert(MessageDto.builder().messageSender(memberId)
-					.messageReceiver(adminUserId).messageContent(requestVO.getContent())
-					.messageSenderLevel(memberLevel).messageReceiverLevel("관리자")
-					.build());
+					.messageReceiver(adminUserId).messageContent(requestVO.getContent()).messageSenderLevel(memberLevel)
+					.messageReceiverLevel("관리자").build());
 
 			String json = mapper.writeValueAsString(messageDto);
 			TextMessage response = new TextMessage(json);
-			session.sendMessage(response);
+
+			// 모든 사용자에게 메시지 전송
+			for (WebSocketSession userSession : users) {
+				userSession.sendMessage(response);
+			}
 		}
 	}
-
 }
-
