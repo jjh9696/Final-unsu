@@ -1,5 +1,6 @@
 package com.kh.lucky.restcontroller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,24 @@ public class ReviewRestController {
 	)
 	@PostMapping("/")
 	public ReviewDto save(@RequestBody ReviewDto reviewDto) {
-		//시퀀스 번호 생성
+		//데이터 확인
+	    System.out.println("서버에서 나오는지?");
+	    System.out.println("Review No: " + reviewDto.getReviewNo());
+	    System.out.println("Review Title: " + reviewDto.getReviewTitle());
+	    System.out.println("Review Content: " + reviewDto.getReviewContent());
+	    System.out.println("Review Star: " + reviewDto.getReviewStar());
+	    System.out.println("Review Writer: " + reviewDto.getReviewWriter());
+	    System.out.println("Review ViewCount: " + reviewDto.getReviewViewCount());
+	    System.out.println("Review Wtime: " + reviewDto.getReviewWtime());
+		
+	    // reviewWtime 설정
+	    //reviewDto.setReviewWtime(new Date());
+
+	    // reviewWriter 설정 (예시: 사용자의 ID)
+	    reviewDto.setReviewWriter("user1"); // 사용자의 ID로 설정 (실제 사용자 ID를 설정해야 함)
+	    
+	    
+	    //시퀀스 번호 생성
 		int sequence = reviewDao.sequence();
 		//번호 설정
 		reviewDto.setReviewNo(sequence);
@@ -61,6 +79,8 @@ public class ReviewRestController {
 		//결과 조회 반환
 		return reviewDao.selectOne(sequence);
 	}
+	
+	
 	
 	//리뷰 목록 조회
 	@Operation(
@@ -99,8 +119,6 @@ public class ReviewRestController {
 					.last(last)//마지막 여부
 				.build();
 	}
-	
-	
 }
 
 
