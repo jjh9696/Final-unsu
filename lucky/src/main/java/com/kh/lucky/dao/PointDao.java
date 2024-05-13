@@ -51,11 +51,11 @@ public class PointDao {
 		sqlSession.insert("point.add", pointDto);
 	}
 	//아이디 토큰으로 받아서 등록
-	public void insertToken(int pointNo, String memberId, int pointAmount) {
-		Map<String, Object> data = new HashMap<>();
-		data.put("pointNo", pointNo);
-		data.put("memberId", memberId);
-		data.put("pointAmount", pointAmount);
-		sqlSession.insert("point.add",data);
-	}
+//	public void insertToken(int pointNo, String memberId, int pointAmount) {
+//		Map<String, Object> data = new HashMap<>();
+//		data.put("pointNo", pointNo);
+//		data.put("memberId", memberId);
+//		data.put("pointAmount", pointAmount);
+//		sqlSession.insert("point.add",data);
+//	}
 }
