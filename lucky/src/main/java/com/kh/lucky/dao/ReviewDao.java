@@ -54,5 +54,14 @@ public class ReviewDao {
 		data.put("endRow", endRow);
 		return sqlSession.selectList("review.listByPaging", data);
 	}
+	//조회수 증가
+	public boolean updateReviewViewCount(int reviewNo) {
+		return sqlSession.update(
+				"review.updateReviewViewCount", reviewNo) > 0;
+	}
+	//삭제
+	public boolean delete(int reviewNo) {
+		return sqlSession.delete("review.delete", reviewNo) > 0;
+	}
 	
 }
