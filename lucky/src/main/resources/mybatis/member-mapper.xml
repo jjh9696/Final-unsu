@@ -6,57 +6,57 @@
 
 <mapper namespace="member">
 
-	<!-- 조회 전체 검색 -->
-	<select id="list" resultType="MemberDto">
-		select * from member
-	</select>
-	<!-- 상세 -->
-	<select id="find" resultType="MemberDto">
-		select * from member where
-		member_id = #{memberId}
-	</select>
-	<!-- 등록 -->
-	<insert id="save">
-		INSERT INTO member (
-		member_id,
-		member_pw,
-		member_name,
-		member_birth,
-		member_email,
-		member_phone
-		<if test="memberZip != null">, member_zip</if>
-		<if test="memberAddr1 != null">, member_addr1</if>
-		<if test="memberAddr2 != null">, member_addr2</if>
-		) VALUES (
-		#{memberId},
-		#{memberPw},
-		#{memberName},
-		#{memberBirth},
-		#{memberEmail},
-		#{memberPhone}
-		<if test="memberZip != null">, #{memberZip}</if>
-		<if test="memberAddr1 != null">, #{memberAddr1}</if>
-		<if test="memberAddr2 != null">, #{memberAddr2}</if>
-		)
+   <!-- 조회 전체 검색 -->
+   <select id="list" resultType="MemberDto">
+      select * from member
+   </select>
+   <!-- 상세 -->
+   <select id="find" resultType="MemberDto">
+      select * from member where
+      member_id = #{memberId}
+   </select>
+   <!-- 등록 -->
+   <insert id="save">
+      INSERT INTO member (
+      member_id,
+      member_pw,
+      member_name,
+      member_birth,
+      member_email,
+      member_phone
+      <if test="memberZip != null">, member_zip</if>
+      <if test="memberAddr1 != null">, member_addr1</if>
+      <if test="memberAddr2 != null">, member_addr2</if>
+      ) VALUES (
+      #{memberId},
+      #{memberPw},
+      #{memberName},
+      #{memberBirth},
+      #{memberEmail},
+      #{memberPhone}
+      <if test="memberZip != null">, #{memberZip}</if>
+      <if test="memberAddr1 != null">, #{memberAddr1}</if>
+      <if test="memberAddr2 != null">, #{memberAddr2}</if>
+      )
 
-	</insert>
+   </insert>
 
-	<!-- 아이디, 등급 조회 -->
-	<select id="listMemberId" resultType="JustMemberInfoVO">
-		SELECT member_id,
-		member_level
-		FROM member
-		ORDER BY member_id ASC
-	</select>
+   <!-- 아이디, 등급 조회 -->
+   <select id="listMemberId" resultType="JustMemberInfoVO">
+      SELECT member_id,
+      member_level
+      FROM member
+      ORDER BY member_id ASC
+   </select>
 
-	<update id="plusMemberPoint">
-		UPDATE member
-		SET member_point = #{memberPoint}
-		WHERE member_id = #{memberId}
-	</update>
+   <update id="plusMemberPoint">
+      UPDATE member
+      SET member_point = #{memberPoint}
+      WHERE member_id = #{memberId}
+   </update>
 
-	<select id="findId" resultType="MemberDto">
-		SELECT * FROM member WHERE member_id = #{memberId}
-	</select>
+   <select id="findId" resultType="MemberDto">
+      SELECT * FROM member WHERE member_id = #{memberId}
+   </select>
 
 </mapper>

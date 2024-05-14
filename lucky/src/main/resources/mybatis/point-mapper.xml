@@ -29,6 +29,7 @@
 		select * from point where point_state = #{pointState} order by point_time asc
 	</select>
 	
+	<!-- 포인트번호로 포인트정보 찾기 -->
 	<select id="find" resultType="pointDto">
 		select * from point where point_no = #{pointNo}
 	</select>
