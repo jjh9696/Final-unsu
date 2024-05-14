@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.lucky.dao.PointDao;
 import com.kh.lucky.dto.PointDto;
 import com.kh.lucky.service.JwtService;
-import com.kh.lucky.service.PointService;
-import com.kh.lucky.vo.MemberLoginVO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -33,8 +31,7 @@ public class PointRestController {
 	private PointDao pointDao;
 	@Autowired
 	private JwtService jwtService;
-	@Autowired
-	private PointService pointService;
+
 
 	// 전체 조회
 	@GetMapping("/")
