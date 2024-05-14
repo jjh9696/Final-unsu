@@ -17,4 +17,11 @@ public class ReviewDto {
 	private String reviewWriter;
 	private int reviewViewCount;
 	private float reviewStar;
+	
+	public String getBoardWriterStr() {
+		if(reviewWriter == null)
+			return "탈퇴한사용자";
+		else
+			return reviewWriter;
+	}
 }
