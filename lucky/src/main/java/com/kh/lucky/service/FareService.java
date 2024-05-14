@@ -1,11 +1,11 @@
 package com.kh.lucky.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kh.lucky.dao.BusDao;
 import com.kh.lucky.dao.ChargeDao;
@@ -101,7 +101,7 @@ public class FareService {
 	}
 	
 	//번호 찾아서 조회
-	public PointDto selectOne(int pointNo) {
+	public PointDto selectOne(int pointNo, String memberId) {
 	    // pointNo를 사용하여 포인트 정보 조회
 	    PointDto pointDto = pointDao.selectOne(pointNo);
 	    if (pointDto == null) {
@@ -111,16 +111,21 @@ public class FareService {
 	    // 포인트 상태가 '결제대기'인 경우 로직 실행
 	    boolean isOrder = "결제대기".equals(pointDto.getPointState());
 	    if (isOrder) {
-	        String memberId = pointDto.getMemberId();
-
+	        memberId = pointDto.getMemberId();
+	        System.out.println("잉?1 : "+ memberId);
 	        MemberDto memberDto = memberDao.selectId(memberId);
+	        System.out.println("잉?2 : "+ memberDto);
 	        // 포인트 금액만큼 회원 포인트 업데이트
 	        int totalPoint = memberDto.getMemberPoint() + pointDto.getPointAmount();
+	        System.out.println("잉?3 : "+ totalPoint);
 	        memberDto.setMemberPoint(totalPoint);
-
+	        System.out.println("잉?4 : "+ memberDto);
+	       
+	        memberDao.plusMemberPoint(totalPoint, memberId);
+//	        memberDto.setMemberPoint(totalPoint);
 	        // 업데이트된 회원 정보를 데이터베이스에 반영
-	        memberDao.plusMemberPoint(memberId);
-
+	        pointDto.setMemberId(memberId);  // PointDto에 memberId 설정
+	        memberDto.setMemberPoint(totalPoint);  // PointDto에 totalPoint 설정
 	        // 업데이트된 회원 정보를 반환하고자 한다면 여기서 memberDto를 반환할 수 있습니다.
 	        return pointDto;  // 또는 필요에 따라 memberDto를 반환할 수 있습니다.
 	    }

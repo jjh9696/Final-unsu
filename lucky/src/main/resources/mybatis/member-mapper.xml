@@ -50,7 +50,13 @@
 	</select>
 
 	<update id="plusMemberPoint">
-		
+		UPDATE member
+		SET member_point = #{memberPoint}
+		WHERE member_id = #{memberId}
 	</update>
+
+	<select id="findId" resultType="MemberDto">
+		SELECT * FROM member WHERE member_id = #{memberId}
+	</select>
 
 </mapper>

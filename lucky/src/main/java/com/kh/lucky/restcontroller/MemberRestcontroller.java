@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.lucky.dao.MemberDao;
 import com.kh.lucky.dao.PointDao;
 import com.kh.lucky.dto.MemberDto;
+import com.kh.lucky.dto.PointDto;
+import com.kh.lucky.service.FareService;
 import com.kh.lucky.service.JwtService;
 import com.kh.lucky.vo.MemberLoginVO;
 
@@ -37,6 +39,9 @@ public class MemberRestcontroller {
 	private JwtService jwtService;
 	@Autowired
 	private PointDao pointDao;
+	@Autowired
+	private FareService fareService;
+
 
 	@GetMapping("/")
 	public ResponseEntity<List<MemberDto>> list() {
@@ -141,4 +146,16 @@ public class MemberRestcontroller {
 	//포인트 증가
 //	@PatchMapping("/")
 //	public 
+	
+	
+	  @GetMapping("/points/{pointNo}")
+	    public ResponseEntity<?> updateMemberPoints(@PathVariable int pointNo, String memberId) {
+	        PointDto pointDto = fareService.selectOne(pointNo, memberId);
+	        if (pointDto == null) {
+	            return ResponseEntity.notFound().build();  // 포인트 정보가 없을 경우 404 에러 반환
+	        }
+
+	        // pointService 내에서 회원 정보가 업데이트 되는 로직이 수행됩니다.
+	        return ResponseEntity.ok(pointDto);  // 성공적으로 처리된 경우, 처리된 포인트 정보 반환
+	    }
 }
