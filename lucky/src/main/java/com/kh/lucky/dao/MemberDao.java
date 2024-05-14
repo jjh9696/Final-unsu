@@ -43,8 +43,9 @@ public class MemberDao {
 		return sqlSession.selectOne("member.findId",memberId);
 	}
 	
-	public void plusMemberPoint(String memberId) {
-		sqlSession.update("member.plusMemberPoint");
+	public boolean plusMemberPoint(MemberDto memberDto) {
+		return sqlSession.update("member.plusMemberPoint", memberDto)>0;
+
 	}
 	
 }

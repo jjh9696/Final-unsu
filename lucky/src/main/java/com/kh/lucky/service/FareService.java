@@ -116,11 +116,12 @@ public class FareService {
 	        MemberDto memberDto = memberDao.selectId(memberId);
 	        // 포인트 금액만큼 회원 포인트 업데이트
 	        int totalPoint = memberDto.getMemberPoint() + pointDto.getPointAmount();
+	        System.out.println("토탈포인트:"+totalPoint);
 	        memberDto.setMemberPoint(totalPoint);
-
+	        System.out.println("멤버디티오안에포인트:"+memberDto.getMemberPoint());
 	        // 업데이트된 회원 정보를 데이터베이스에 반영
-	        memberDao.plusMemberPoint(memberId);
-
+//	        memberDao.plusMemberPoint(memberId);
+	        
 	        // 업데이트된 회원 정보를 반환하고자 한다면 여기서 memberDto를 반환할 수 있습니다.
 	        return pointDto;  // 또는 필요에 따라 memberDto를 반환할 수 있습니다.
 	    }
