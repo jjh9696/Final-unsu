@@ -1,6 +1,8 @@
 package com.kh.lucky.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +45,11 @@ public class MemberDao {
 		return sqlSession.selectOne("member.findId",memberId);
 	}
 	
-	public boolean plusMemberPoint(MemberDto memberDto) {
-		return sqlSession.update("member.plusMemberPoint", memberDto)>0;
-
+	public void plusMemberPoint(int totalPoint, String memberId) {
+		Map<String, Object> info = new HashMap<>();
+        info.put("memberPoint", totalPoint);
+        info.put("memberId", memberId);
+		sqlSession.update("member.plusMemberPoint",info);
 	}
 	
 }
