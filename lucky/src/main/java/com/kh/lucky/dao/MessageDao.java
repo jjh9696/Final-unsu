@@ -35,14 +35,9 @@ public class MessageDao {
 //		return sqlSession.selectOne("message.findMessage", memberId);
 //	}
 
-//    // 최근 메시지 보낸 사람 조회
-//    public String findRecentSender() {
-//        return sqlSession.selectOne("message.findRecentSender");
-//    }
-//
-//    // 최근 메시지 받은 사람 조회
-//    public String findRecentReceiver() {
-//        return sqlSession.selectOne("message.findRecentReceiver");
-//    }
+    // 최근 메시지 보낸 사람 조회
+	public List<String> findSenderList() {
+	    return sqlSession.selectList("message.findSender");
+	}
 
 }
