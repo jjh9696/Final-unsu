@@ -4,25 +4,37 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.kh.lucky.dao.BusDao;
 import com.kh.lucky.dao.ChargeDao;
+import com.kh.lucky.dao.MemberDao;
+import com.kh.lucky.dao.PointDao;
 import com.kh.lucky.dao.RouteDao;
 import com.kh.lucky.dto.BusDto;
 import com.kh.lucky.dto.ChargeDto;
+import com.kh.lucky.dto.MemberDto;
+import com.kh.lucky.dto.PointDto;
 import com.kh.lucky.dto.RouteDto;
 
 @Service
 public class FareService {
 
 	@Autowired
-	RouteDao routeDao;
+	private RouteDao routeDao;
 
 	@Autowired
-	ChargeDao chargeDao;
+	private ChargeDao chargeDao;
 
 	@Autowired
-	BusDao busDao;
+	private BusDao busDao;
+	
+	@Autowired
+	private PointDao pointDao;
+	
+	@Autowired
+	private MemberDao memberDao;
 
 	public int calculateFare(int chargeNo, int routeNo) {
 		ChargeDto chargeDto = chargeDao.selectOne(chargeNo); // 요금 정보 조회
@@ -87,5 +99,33 @@ public class FareService {
 
 		return totalFare;
 	}
+	
+	//번호 찾아서 조회
+	public PointDto selectOne(int pointNo) {
+	    // pointNo를 사용하여 포인트 정보 조회
+	    PointDto pointDto = pointDao.selectOne(pointNo);
+	    if (pointDto == null) {
+	        return null;  // 조회된 포인트 정보가 없으면 null 반환
+	    }
 
+	    // 포인트 상태가 '결제대기'인 경우 로직 실행
+	    boolean isOrder = "결제대기".equals(pointDto.getPointState());
+	    if (isOrder) {
+	        String memberId = pointDto.getMemberId();
+
+	        MemberDto memberDto = memberDao.selectId(memberId);
+	        // 포인트 금액만큼 회원 포인트 업데이트
+	        int totalPoint = memberDto.getMemberPoint() + pointDto.getPointAmount();
+	        memberDto.setMemberPoint(totalPoint);
+
+	        // 업데이트된 회원 정보를 데이터베이스에 반영
+	        memberDao.plusMemberPoint(memberId);
+
+	        // 업데이트된 회원 정보를 반환하고자 한다면 여기서 memberDto를 반환할 수 있습니다.
+	        return pointDto;  // 또는 필요에 따라 memberDto를 반환할 수 있습니다.
+	    }
+
+	    // 포인트 상태가 '결제대기'가 아니면 원래 포인트 정보 반환
+	    return pointDto;
+	}
 }

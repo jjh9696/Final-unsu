@@ -70,7 +70,7 @@ public class PointRestController {
 		return ResponseEntity.ok().build();
 	}
 	
-	
+	//포인트 구매대기 등록
 	@PostMapping("/")
     public PointDto save(@RequestBody PointDto pointDto, @RequestHeader("Authorization") String token) {
         //데이터 확인
