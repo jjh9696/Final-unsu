@@ -37,4 +37,14 @@ public class MemberDao {
 	public List<MemberDto> selectMemberIdList(){
 		return sqlSession.selectList("member.listMemberId");
 	}
+	
+	// 아이디 중복검사할 때 필요함
+	public MemberDto selectId(String memberId)	{
+		return sqlSession.selectOne("member.findId",memberId);
+	}
+	
+	public void plusMemberPoint(String memberId) {
+		sqlSession.update("member.plusMemberPoint");
+	}
+	
 }

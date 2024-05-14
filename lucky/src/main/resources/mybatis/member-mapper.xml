@@ -18,34 +18,39 @@
 	<!-- 등록 -->
 	<insert id="save">
 		INSERT INTO member (
-        member_id,
-        member_pw,
-        member_name,
-        member_birth,
-        member_email,
-        member_phone
-        <if test="memberZip != null">, member_zip</if>
-        <if test="memberAddr1 != null">, member_addr1</if>
-        <if test="memberAddr2 != null">, member_addr2</if>
-    ) VALUES (
-        #{memberId},
-        #{memberPw},
-        #{memberName},
-        #{memberBirth},
-        #{memberEmail},
-        #{memberPhone}
-        <if test="memberZip != null">, #{memberZip}</if>
-        <if test="memberAddr1 != null">, #{memberAddr1}</if>
-        <if test="memberAddr2 != null">, #{memberAddr2}</if>
-    )
+		member_id,
+		member_pw,
+		member_name,
+		member_birth,
+		member_email,
+		member_phone
+		<if test="memberZip != null">, member_zip</if>
+		<if test="memberAddr1 != null">, member_addr1</if>
+		<if test="memberAddr2 != null">, member_addr2</if>
+		) VALUES (
+		#{memberId},
+		#{memberPw},
+		#{memberName},
+		#{memberBirth},
+		#{memberEmail},
+		#{memberPhone}
+		<if test="memberZip != null">, #{memberZip}</if>
+		<if test="memberAddr1 != null">, #{memberAddr1}</if>
+		<if test="memberAddr2 != null">, #{memberAddr2}</if>
+		)
 
 	</insert>
-	
+
 	<!-- 아이디, 등급 조회 -->
 	<select id="listMemberId" resultType="JustMemberInfoVO">
-		SELECT member_id, member_level
+		SELECT member_id,
+		member_level
 		FROM member
 		ORDER BY member_id ASC
 	</select>
+
+	<update id="plusMemberPoint">
+		
+	</update>
 
 </mapper>
