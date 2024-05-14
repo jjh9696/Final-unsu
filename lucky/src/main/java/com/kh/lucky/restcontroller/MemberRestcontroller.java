@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.lucky.dao.MemberDao;
 import com.kh.lucky.dao.PointDao;
 import com.kh.lucky.dto.MemberDto;
+import com.kh.lucky.dto.PointDto;
+import com.kh.lucky.service.FareService;
 import com.kh.lucky.service.JwtService;
 import com.kh.lucky.vo.MemberLoginVO;
 
@@ -37,6 +40,8 @@ public class MemberRestcontroller {
 	private JwtService jwtService;
 	@Autowired
 	private PointDao pointDao;
+	@Autowired
+	private FareService fareService;
 
 	@GetMapping("/")
 	public ResponseEntity<List<MemberDto>> list() {
@@ -126,16 +131,16 @@ public class MemberRestcontroller {
 	    return memberDao.selectOne(memberId);
 	}
 	
-//	//포인트 증가
-//	@PatchMapping("/point/{pointNo}")
-//	public ResponseEntity<String> plusMemberPoint(@PathVariable int pointNo) {
-//	    int updatedRows = memberDao.plusMemberPoint(pointNo);
-//	    if (updatedRows > 0) {
-//	        return ResponseEntity.ok().build();
-//	    } else {
-//	        return ResponseEntity.notFound().build();
-//	    }
-//	}
+	//포인트 증가
+	@PatchMapping("/point/{pointNo}")
+	public ResponseEntity<?> plusMemberPoint(@PathVariable int pointNo, @RequestBody MemberDto memberDto) {
+	    PointDto updatedRows = fareService.selectOne(pointNo);
+	    if (updatedRows != null) {
+	        return ResponseEntity.ok().build();
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
+	}
 	
 	
 	//포인트 증가
