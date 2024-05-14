@@ -23,10 +23,10 @@
     
     <insert id="save">
      INSERT INTO reservation 
-     (reservation_no, reservation_date, reservation_time, member_id, 
+     (reservation_no,  member_id, 
      grade_type, route_no, bus_no, seat_no)
      VALUES 
-    (#{reservationNo}, SYSDATE, SYSDATE,
+    (#{reservationNo}, 
      #{memberId}, #{gradeType}, #{routeNo}, #{busNo}, #{seatNo})
     </insert>
     
