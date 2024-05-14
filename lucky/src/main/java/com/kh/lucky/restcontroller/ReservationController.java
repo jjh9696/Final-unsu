@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.lucky.dao.ReservationDao;
 import com.kh.lucky.dto.ReservationDto;
 import com.kh.lucky.dto.TerminalDto;
+import com.kh.lucky.service.JwtService;
 import com.kh.lucky.vo.FilterTerminalVO;
 
 
@@ -30,7 +32,8 @@ public class ReservationController {
 	
 	@Autowired
 	private ReservationDao reservationDao;
-	
+	@Autowired
+	private JwtService jwtService;
 	
 	//조회
 	@GetMapping("/")
@@ -56,15 +59,35 @@ public class ReservationController {
 	}
 	
 	// 예약 인서트하는 매핑
+//	@PostMapping("/save")
+//	public ReservationDto save(@RequestBody ReservationDto reservationDto) {
+//		int sequence = reservationDao.sequence();
+//		reservationDto.setReservationNo(sequence);
+//		reservationDao.save(reservationDto);
+//		System.out.println("이건나오니?"+reservationDto);
+//		return reservationDao.selectOne(sequence);
+//	}
 	@PostMapping("/save")
-	public ReservationDto save(@RequestBody ReservationDto reservationDto) {
-		int sequence = reservationDao.sequence();
-		reservationDto.setReservationNo(sequence);
-		reservationDao.save(reservationDto);
-		System.out.println("이건나오니?"+reservationDto);
-		return reservationDao.selectOne(sequence);
-	}
-	
+    public ReservationDto save(@RequestBody ReservationDto reservationDto, @RequestHeader("Authorization") String token) {
+        //데이터 확인
+        System.out.println("서버에서 나오는지?");
+
+        String memberId = jwtService.parse(token).getMemberId();
+        
+        // reviewWriter 설정 (예시: 사용자의 ID)
+        reservationDto.setMemberId(memberId); // 사용자의 ID로 설정 (실제 사용자 ID를 설정해야 함)
+        
+        
+        //시퀀스 번호 생성
+        int sequence = reservationDao.sequence();
+        //번호 설정
+        reservationDto.setReservationNo(sequence);
+        //등록
+    	
+        reservationDao.save(reservationDto);
+        //결과 조회 반환
+        return reservationDao.selectOne(sequence);
+    }
 	
 	
 	//조회 단일

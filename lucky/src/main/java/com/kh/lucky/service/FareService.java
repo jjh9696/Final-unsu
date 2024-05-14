@@ -76,14 +76,14 @@ public class FareService {
 		int totalFare = (baseFare + additionalFare) * count;
 
 		// 결과 출력
-		System.out.println("Count: " + count);
-		System.out.println("Base fare: " + baseFare);
-		System.out.println("Total fare: " + totalFare);
-		System.out.println("Additional km: " + km);
-		System.out.println("Additional fare: " + additionalFare);
-		System.out.println("Route number: " + routeDto);
-		System.out.println("Bus grade by bus number: " + busGrade);
-		System.out.println("Selected charge information: " + chargeDto);
+//		System.out.println("Count: " + count);
+//		System.out.println("Base fare: " + baseFare);
+//		System.out.println("Total fare: " + totalFare);
+//		System.out.println("Additional km: " + km);
+//		System.out.println("Additional fare: " + additionalFare);
+//		System.out.println("Route number: " + routeDto);
+//		System.out.println("Bus grade by bus number: " + busGrade);
+//		System.out.println("Selected charge information: " + chargeDto);
 
 		return totalFare;
 	}
