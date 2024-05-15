@@ -1,5 +1,6 @@
 package com.kh.lucky.websocket;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -59,7 +60,9 @@ public class MemberChatWebSocketServer extends TextWebSocketHandler {
 
         // 최근 메시지 보낸 사람 조회 및 전송
         List<String> recentSender = messageDao.findSenderList();
-        String recentSenderList = mapper.writeValueAsString(new WebSocketMessage("recentSenderList", recentSender));
+        // HashSet을 사용하여 중복된 값을 제거
+        Set<String> uniqueSenders = new HashSet<>(recentSender);
+        String recentSenderList = mapper.writeValueAsString(new WebSocketMessage("recentSenderList", uniqueSenders));
         TextMessage recentSendersMessage = new TextMessage(recentSenderList);
         session.sendMessage(recentSendersMessage);
     }
