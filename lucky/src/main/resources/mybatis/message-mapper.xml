@@ -45,16 +45,6 @@
 	</select>
 
 	<!-- 최근 메시지 보낸 사람 조회 -->
-	<!-- <select id="findSender" resultType="MessageDto"> SELECT m1.* FROM message 
-		m1 LEFT OUTER JOIN message m2 ON (m1.message_sender = m2.message_receiver 
-		AND m2.message_no > m1.message_no) WHERE m1.message_sender_level = '일반회원' 
-		AND m2.message_no IS NULL ORDER BY m1.message_no desc; </select> -->
-
-	<!-- <select id="findSender" resultType="MessageDto"> select m1.* from message 
-		m1 left outer join message m2 on (m1.message_sender = m2.message_receiver 
-		and m2.message_no > m1.message_no) where m1.message_sender_level = '일반회원' 
-		and m2.message_no is null order by m1.message_no desc; </select> -->
-
 	<select id="findSender" resultType="String">
 		SELECT m1.message_sender FROM
 		message m1

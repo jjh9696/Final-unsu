@@ -94,6 +94,15 @@ public class MemberChatWebSocketServer extends TextWebSocketHandler {
             for (WebSocketSession userSession : users) {
                 userSession.sendMessage(response);
             }
+            
+         // 최근 메시지 보낸 사람 조회 및 전송
+            List<String> recentSender = messageDao.findSenderList();
+            Set<String> uniqueSenders = new HashSet<>(recentSender);
+            String recentSenderList = mapper.writeValueAsString(new WebSocketMessage("recentSenderList", uniqueSenders));
+            TextMessage recentSendersMessage = new TextMessage(recentSenderList);
+            for (WebSocketSession userSession : users) {
+                userSession.sendMessage(recentSendersMessage);
+            }
 
         }
         // 관리자가 아니면 문의 전용 관리자에게 메세지 전송
@@ -110,6 +119,15 @@ public class MemberChatWebSocketServer extends TextWebSocketHandler {
 
             for (WebSocketSession userSession : users) {
                 userSession.sendMessage(response);
+            }
+            
+         // 최근 메시지 보낸 사람 조회 및 전송
+            List<String> recentSender = messageDao.findSenderList();
+            Set<String> uniqueSenders = new HashSet<>(recentSender);
+            String recentSenderList = mapper.writeValueAsString(new WebSocketMessage("recentSenderList", uniqueSenders));
+            TextMessage recentSendersMessage = new TextMessage(recentSenderList);
+            for (WebSocketSession userSession : users) {
+                userSession.sendMessage(recentSendersMessage);
             }
         }
     }
