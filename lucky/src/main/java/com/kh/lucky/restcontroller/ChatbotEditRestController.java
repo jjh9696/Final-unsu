@@ -94,55 +94,55 @@ public class ChatbotEditRestController {
 	
 	
 	//상세
-	@Operation(
-		description = "챗봇 상세 조회",
-		responses = {
-			@ApiResponse(
-				responseCode = "200",
-				description = "조회 성공",
-				content = @Content(
-					mediaType = "application/json",
-					schema = @Schema(implementation = ChatbotDto.class)
-				)
-			),
-			@ApiResponse(
-				responseCode = "404", description = "해당 챗봇의 데이터가 없음",
-				content = @Content(
-					mediaType = "text/plain", 
-					schema = @Schema(implementation = String.class),
-					examples = @ExampleObject("not found")
-				)
-			),
-			@ApiResponse(
-				responseCode = "500", description = "서버 오류",
-				content = @Content(
-					mediaType = "text/plain", 
-					schema = @Schema(implementation = String.class),
-					examples = @ExampleObject("server error")
-				)
-			)
-		}
-	)
-	@GetMapping("/{chatbotNo}")
-	public ResponseEntity<ChatbotDto> find(@PathVariable int chatbotNo) {
-		ChatbotDto chatbotDto = chatbotDao.selectOne(chatbotNo);
-		if(chatbotDto == null) {
-			//return ResponseEntity.notFound().build();
-			return ResponseEntity.status(404).build();
-		}
-		//return ResponseEntity.ok(chatbotDto);
-		return ResponseEntity.status(200).body(chatbotDto);
-	}
+//	@Operation(
+//		description = "챗봇 상세 조회",
+//		responses = {
+//			@ApiResponse(
+//				responseCode = "200",
+//				description = "조회 성공",
+//				content = @Content(
+//					mediaType = "application/json",
+//					schema = @Schema(implementation = ChatbotDto.class)
+//				)
+//			),
+//			@ApiResponse(
+//				responseCode = "404", description = "해당 챗봇의 데이터가 없음",
+//				content = @Content(
+//					mediaType = "text/plain", 
+//					schema = @Schema(implementation = String.class),
+//					examples = @ExampleObject("not found")
+//				)
+//			),
+//			@ApiResponse(
+//				responseCode = "500", description = "서버 오류",
+//				content = @Content(
+//					mediaType = "text/plain", 
+//					schema = @Schema(implementation = String.class),
+//					examples = @ExampleObject("server error")
+//				)
+//			)
+//		}
+//	)
+//	@GetMapping("/{chatbotNo}")
+//	public ResponseEntity<ChatbotDto> find(@PathVariable int chatbotNo) {
+//		ChatbotDto chatbotDto = chatbotDao.selectOne(chatbotNo);
+//		if(chatbotDto == null) {
+//			//return ResponseEntity.notFound().build();
+//			return ResponseEntity.status(404).build();
+//		}
+//		//return ResponseEntity.ok(chatbotDto);
+//		return ResponseEntity.status(200).body(chatbotDto);
+//	}
 	
-	@PutMapping("/")
-	public ResponseEntity<?> editAll(@RequestBody ChatbotDto chatbotDto) {
-		boolean result = chatbotDao.editAll(chatbotDto);
-		if(result == false) {
-			//return ResponseEntity.notFound().build();
-			return ResponseEntity.status(404).build();
-		}
-		return ResponseEntity.ok().build();
-	}
+//	@PutMapping("/")
+//	public ResponseEntity<?> editAll(@RequestBody ChatbotDto chatbotDto) {
+//		boolean result = chatbotDao.editAll(chatbotDto);
+//		if(result == false) {
+//			//return ResponseEntity.notFound().build();
+//			return ResponseEntity.status(404).build();
+//		}
+//		return ResponseEntity.ok().build();
+//	}
 	
 	//수정
 	@Operation(
