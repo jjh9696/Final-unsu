@@ -24,10 +24,10 @@
     <insert id="save">
      INSERT INTO reservation 
      (reservation_no,  member_id, 
-     grade_type, route_no, bus_no, seat_no)
+     grade_type, route_no, bus_no, seat_no, reservation_count, reservation_type)
      VALUES 
     (#{reservationNo}, 
-     #{memberId}, #{gradeType}, #{routeNo}, #{busNo}, #{seatNo})
+     #{memberId}, #{gradeType}, #{routeNo}, #{busNo}, #{seatNo}, #{reservationCount}, #{reservationType})
     </insert>
     
     <select id="find" resultType="ReservationDto">

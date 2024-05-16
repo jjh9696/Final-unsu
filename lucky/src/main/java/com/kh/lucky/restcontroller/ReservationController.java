@@ -70,7 +70,7 @@ public class ReservationController {
 	@PostMapping("/save")
     public ReservationDto save(@RequestBody ReservationDto reservationDto, @RequestHeader("Authorization") String token) {
         //데이터 확인
-        System.out.println("서버에서 나오는지?");
+//        System.out.println("서버에서 나오는지?");
 
         String memberId = jwtService.parse(token).getMemberId();
         
