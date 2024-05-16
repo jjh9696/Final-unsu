@@ -23,7 +23,7 @@
 	</select>
 	
 	<select id="find" resultType="PaymentDto">
-		select * from driver where driver_no = #{driverNo}
+		select * from payment where payment_no = #{paymentNo}
 	</select>
 	
 	

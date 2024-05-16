@@ -10,4 +10,5 @@ public class RequestChargeVO {
 	  private String chargeType;
 	  private int routeNo;
 	  private int count;
+	  private int paymentNo;
 }

@@ -49,7 +49,7 @@
       ORDER BY member_id ASC
    </select>
 
-   <update id="plusMemberPoint">
+   <update id="memberPoint">
       UPDATE member
       SET member_point = #{memberPoint}
       WHERE member_id = #{memberId}
@@ -58,5 +58,14 @@
    <select id="findId" resultType="MemberDto">
       SELECT * FROM member WHERE member_id = #{memberId}
    </select>
+   
+   <!-- 회원 검색  해보기
+   <select id="searchList" resultType="NoticeDto">
+	    select member_id, member_name, notice_content,
+	           notice_wdate, notice_view_count
+	    from notice
+	    where instr(${column}, #{keyword}) > 0
+	    order by member_join DESC
+	</select> -->
 
 </mapper>

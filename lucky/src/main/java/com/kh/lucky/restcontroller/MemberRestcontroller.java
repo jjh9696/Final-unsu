@@ -16,12 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.lucky.dao.MemberDao;
+import com.kh.lucky.dao.PaymentDao;
 import com.kh.lucky.dao.PointDao;
 import com.kh.lucky.dto.MemberDto;
+import com.kh.lucky.dto.PaymentDto;
 import com.kh.lucky.dto.PointDto;
 import com.kh.lucky.service.FareService;
 import com.kh.lucky.service.JwtService;
 import com.kh.lucky.vo.MemberLoginVO;
+import com.kh.lucky.vo.RequestChargeVO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -40,6 +43,8 @@ public class MemberRestcontroller {
 	private PointDao pointDao;
 	@Autowired
 	private FareService fareService;
+	@Autowired
+	private PaymentDao paymentDao;
 
 	@GetMapping("/")
 	public ResponseEntity<List<MemberDto>> list() {
@@ -129,29 +134,51 @@ public class MemberRestcontroller {
 		return memberDao.selectOne(memberId);
 	}
 
-//   //포인트 증가
-//   @PatchMapping("/point/{pointNo}")
-//   public ResponseEntity<String> plusMemberPoint(@PathVariable int pointNo) {
-//       int updatedRows = memberDao.plusMemberPoint(pointNo);
-//       if (updatedRows > 0) {
-//           return ResponseEntity.ok().build();
-//       } else {
-//           return ResponseEntity.notFound().build();
-//       }
-//   }
-
 	// 포인트 증가
-//   @PatchMapping("/")
-//   public 
-
 	@GetMapping("/points/{pointNo}")
 	public ResponseEntity<?> updateMemberPoints(@PathVariable int pointNo) {
 		PointDto pointDto = fareService.selectOne(pointNo);
 		if (pointDto == null) {
 			return ResponseEntity.notFound().build(); // 포인트 정보가 없을 경우 404 에러 반환
 		}
-
 		// pointService 내에서 회원 정보가 업데이트 되는 로직이 수행됩니다.
 		return ResponseEntity.ok(pointDto); // 성공적으로 처리된 경우, 처리된 포인트 정보 반환
+	}
+
+	// 페이먼트 등록 + 포인트 차감
+	@PostMapping("/memberPoint")
+	public ResponseEntity<?> minusMemberPoints(@RequestBody RequestChargeVO requestChargeVO, 
+																			@RequestHeader("Authorization") String token) {
+		int totalFare = fareService.gradeTypeFare(requestChargeVO.getChargeType(), requestChargeVO.getRouteNo(), 
+												requestChargeVO.getCount());
+		System.out.println("되나1?"+totalFare);
+		MemberLoginVO loginVO = jwtService.parse(token); 
+		String memberId = loginVO.getMemberId();
+		
+		System.out.println("되나?2"+memberId);
+	    PaymentDto paymentDto = new PaymentDto();
+		int sequence = paymentDao.sequence(); //시퀀스 번호 생성하고
+		paymentDto.setPaymentNo(sequence); //시퀀스로 번호 설정
+		System.out.println("되나?3"+sequence);
+		paymentDto.setMemberId(memberId);
+		paymentDto.setPaymentFare(totalFare);
+		paymentDao.insert(paymentDto); //등록
+		paymentDao.selectOne(sequence);
+		
+		//포인트 차감
+	      MemberDto memberDto = memberDao.selectId(memberId);
+	      
+	      boolean hasPoint = memberDto.getMemberPoint() >= totalFare;
+	      
+	      if(hasPoint) {
+				int totalPoint = memberDto.getMemberPoint() - totalFare;
+				memberDto.setMemberPoint(totalPoint);
+				
+				memberDao.memberPoint(totalPoint,memberId);
+	      } else {
+	    	  return ResponseEntity.status(401).build();
+	      }
+	      
+	      return ResponseEntity.ok().body(sequence);
 	}
 }

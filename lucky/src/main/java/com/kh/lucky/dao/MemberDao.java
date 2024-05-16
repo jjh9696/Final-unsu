@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.lucky.dto.MemberDto;
+import com.kh.lucky.vo.RequestChargeVO;
 
 
 @Repository
@@ -45,11 +46,16 @@ public class MemberDao {
 		return sqlSession.selectOne("member.findId",memberId);
 	}
 	
-	public void plusMemberPoint(int totalPoint, String memberId) {
+	//포인트 증가
+	public void memberPoint(int totalPoint, String memberId) {
 		Map<String, Object> info = new HashMap<>();
         info.put("memberPoint", totalPoint);
         info.put("memberId", memberId);
-		sqlSession.update("member.plusMemberPoint",info);
+		sqlSession.update("member.memberPoint",info);
 	}
 	
+	//포인트 차감
+	public List<RequestChargeVO> selectPrice() {
+		return sqlSession.selectOne("charge.find");
+	}
 }
