@@ -101,7 +101,7 @@ public class FareService {
    }
    
    //번호 찾아서 조회
-   public PointDto selectOne(int pointNo, String memberId) {
+   public PointDto selectOne(int pointNo) {
        // pointNo를 사용하여 포인트 정보 조회
        PointDto pointDto = pointDao.selectOne(pointNo);
        if (pointDto == null) {
@@ -109,9 +109,9 @@ public class FareService {
        }
 
        // 포인트 상태가 '결제대기'인 경우 로직 실행
-       boolean isOrder = "결제대기".equals(pointDto.getPointState());
-       if (isOrder) {
-           memberId = pointDto.getMemberId();
+//       boolean isOrder = "결제대기".equals(pointDto.getPointState());
+//       if (isOrder) {
+           String memberId = pointDto.getMemberId();
            System.out.println("잉?1 : "+ memberId);
            MemberDto memberDto = memberDao.selectId(memberId);
            System.out.println("잉?2 : "+ memberDto);
@@ -121,16 +121,16 @@ public class FareService {
            memberDto.setMemberPoint(totalPoint);
            System.out.println("잉?4 : "+ memberDto);
           
-           memberDao.plusMemberPoint(totalPoint, memberId);
+           memberDao.plusMemberPoint(totalPoint,memberId);
 //           memberDto.setMemberPoint(totalPoint);
            // 업데이트된 회원 정보를 데이터베이스에 반영
            pointDto.setMemberId(memberId);  // PointDto에 memberId 설정
            memberDto.setMemberPoint(totalPoint);  // PointDto에 totalPoint 설정
            // 업데이트된 회원 정보를 반환하고자 한다면 여기서 memberDto를 반환할 수 있습니다.
            return pointDto;  // 또는 필요에 따라 memberDto를 반환할 수 있습니다.
-       }
+//       }
 
        // 포인트 상태가 '결제대기'가 아니면 원래 포인트 정보 반환
-       return pointDto;
+//       return pointDto;
    }
 }
