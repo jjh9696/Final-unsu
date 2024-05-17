@@ -32,9 +32,14 @@ public class PaymentDao {
 		return sqlSession.selectOne("payment.find", paymentNo);
 	}
 	
+	public List<PaymentDto> selectByMemberId(String memberId) {
+        return sqlSession.selectList("payment.findByMemberId", memberId);
+    }
+	
 	
 	//삭제
 	public boolean delete(int paymentNo) {
 		return sqlSession.delete("driver.delete",paymentNo) > 0;
 	}
+
 }

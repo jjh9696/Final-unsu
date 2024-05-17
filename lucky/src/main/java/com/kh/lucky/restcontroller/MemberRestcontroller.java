@@ -129,7 +129,7 @@ public class MemberRestcontroller {
 	@GetMapping("/token/{memberId}")
 	public MemberDto selectMemberId(@RequestHeader("Authorization") String token) {
 		MemberLoginVO loginVO = jwtService.parse(token);
-		System.out.println("결과:" + loginVO);
+//		System.out.println("결과:" + loginVO);
 		String memberId = loginVO.getMemberId();
 		return memberDao.selectOne(memberId);
 	}
@@ -151,15 +151,15 @@ public class MemberRestcontroller {
 																			@RequestHeader("Authorization") String token) {
 		int totalFare = fareService.gradeTypeFare(requestChargeVO.getChargeType(), requestChargeVO.getRouteNo(), 
 												requestChargeVO.getCount());
-		System.out.println("되나1?"+totalFare);
+//		System.out.println("되나1?"+totalFare);
 		MemberLoginVO loginVO = jwtService.parse(token); 
 		String memberId = loginVO.getMemberId();
 		
-		System.out.println("되나?2"+memberId);
+//		System.out.println("되나?2"+memberId);
 	    PaymentDto paymentDto = new PaymentDto();
 		int sequence = paymentDao.sequence(); //시퀀스 번호 생성하고
 		paymentDto.setPaymentNo(sequence); //시퀀스로 번호 설정
-		System.out.println("되나?3"+sequence);
+//		System.out.println("되나?3"+sequence);
 		paymentDto.setMemberId(memberId);
 		paymentDto.setPaymentFare(totalFare);
 		paymentDao.insert(paymentDto); //등록
