@@ -3,6 +3,8 @@ package com.kh.lucky.dto;
 
 import java.sql.Date;
 
+import com.kh.lucky.vo.LikeVO;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +19,7 @@ public class ReviewDto {
 	private String reviewWriter;
 	private int reviewViewCount;
 	private float reviewStar;
+	private LikeVO likeVO;
 	
 	public String getBoardWriterStr() {
 		if(reviewWriter == null)

@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.lucky.dao.ReviewDao;
+import com.kh.lucky.dao.ReviewLikeDao;
 import com.kh.lucky.dto.ReviewDto;
 import com.kh.lucky.service.JwtService;
+import com.kh.lucky.vo.LikeVO;
 import com.kh.lucky.vo.ReviewDataVO;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,6 +37,7 @@ public class ReviewRestController {
 	private ReviewDao reviewDao;
 	@Autowired
     private JwtService jwtService;
+	private ReviewLikeDao reviewLikeDao;
 	
 	//등록
 	@Operation(
@@ -59,14 +62,14 @@ public class ReviewRestController {
 	public ReviewDto save(@RequestBody ReviewDto reviewDto,
 							@RequestHeader("Authorization") String token) {
 		//데이터 확인
-	    System.out.println("서버에서 나오는지?");
-	    System.out.println("Review No: " + reviewDto.getReviewNo());
-	    System.out.println("Review Title: " + reviewDto.getReviewTitle());
-	    System.out.println("Review Content: " + reviewDto.getReviewContent());
-	    System.out.println("Review Star: " + reviewDto.getReviewStar());
-	    System.out.println("Review Writer: " + reviewDto.getReviewWriter());
-	    System.out.println("Review ViewCount: " + reviewDto.getReviewViewCount());
-	    System.out.println("Review Wtime: " + reviewDto.getReviewWtime());
+//	    System.out.println("서버에서 나오는지?");
+//	    System.out.println("Review No: " + reviewDto.getReviewNo());
+//	    System.out.println("Review Title: " + reviewDto.getReviewTitle());
+//	    System.out.println("Review Content: " + reviewDto.getReviewContent());
+//	    System.out.println("Review Star: " + reviewDto.getReviewStar());
+//	    System.out.println("Review Writer: " + reviewDto.getReviewWriter());
+//	    System.out.println("Review ViewCount: " + reviewDto.getReviewViewCount());
+//	    System.out.println("Review Wtime: " + reviewDto.getReviewWtime());
 		
 	    // reviewWtime 설정
 	    //reviewDto.setReviewWtime(new Date());
@@ -109,8 +112,26 @@ public class ReviewRestController {
 		}
 	)
 	@GetMapping("/")
-	public ResponseEntity<List<ReviewDto>> list(){
+	public ResponseEntity<List<ReviewDto>> list(@RequestHeader("Authorization") String token){
 		List<ReviewDto> list = reviewDao.selectList();
+		
+		
+	    for (ReviewDto reviewDto : list) {
+	        int reviewNo = reviewDto.getReviewNo();
+	        //System.out.println("리뷰 번호 : " + reviewNo);
+	       
+	        String memberId = jwtService.parse(token).getMemberId();
+            boolean liked = reviewLikeDao.check(memberId, reviewNo);
+            int likeCount = reviewLikeDao.count(reviewNo);
+            
+            //reviewDto에 추가
+            LikeVO likeVO = LikeVO.builder()
+                                  .state(liked)
+                                  .count(likeCount)
+                                  .build();
+            reviewDto.setLikeVO(likeVO);
+	    }
+	    
 		return ResponseEntity.ok().body(list);
 	}
 	
@@ -120,6 +141,7 @@ public class ReviewRestController {
 		int count = reviewDao.count();
 		int endRow = page * size;
 		boolean last = endRow >= count;
+		
 		return ReviewDataVO.builder()
 					.list(list)//화면에 표시할 목록
 					.count(count)//총 데이터 개수
@@ -182,7 +204,12 @@ public class ReviewRestController {
 		return ResponseEntity.ok().body(reviewDto);
 	}
 	
-	
+	//개수 구하기
+	@GetMapping("/count")
+	public ResponseEntity<Integer> count() {
+	    int count = reviewDao.count();
+	    return ResponseEntity.ok().body(count);
+	}
 
 }
 
