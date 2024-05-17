@@ -83,5 +83,18 @@
 		SELECT DISTINCT TERMINAL_REGION FROM terminal order by TERMINAL_REGION asc
 	</select>
     
+    <!-- 월별 데이터 YYYY-MM -->
+    <select id="timeStats" resultType="ReservationDto">
+    	SELECT TO_CHAR(RESERVATION_TIME, 'YYYY-MM') AS RESERVATION_time, COUNT(*) AS RESERVATION_COUNT
+		FROM RESERVATION
+		GROUP BY TO_CHAR(RESERVATION_TIME, 'YYYY-MM')
+    </select>
+    
+    <!-- 연도별 데이터 YYYY -->
+    <select id="yearStats" resultType="ReservationDto">
+    	SELECT TO_CHAR(RESERVATION_TIME, 'YYYY') AS RESERVATION_time, COUNT(*) AS RESERVATION_COUNT
+		FROM RESERVATION
+		GROUP BY TO_CHAR(RESERVATION_TIME, 'YYYY')
+    </select>
     
     </mapper>

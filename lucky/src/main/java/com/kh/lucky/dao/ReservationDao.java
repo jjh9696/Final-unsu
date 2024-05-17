@@ -25,11 +25,12 @@ public class ReservationDao {
 	public void insert(ReservationDto reservationDto) {
 		sqlSession.insert("reservation.insert", reservationDto);
 	}
+
 	// 예약 등록
 	public void save(ReservationDto reservationDto) {
-		sqlSession.insert("reservation.save",reservationDto);
+		sqlSession.insert("reservation.save", reservationDto);
 	}
-	
+
 	// 조회 전체
 	public List<ReservationDto> selectList() {
 		return sqlSession.selectList("reservation.list");
@@ -57,11 +58,11 @@ public class ReservationDao {
 	public List<TerminalDto> selectStartList(String terminalRegion) {
 		return sqlSession.selectList("reservation.list", terminalRegion);
 	}
-	// 
+
+	//
 	public List<FilterTerminalVO> selectEndList(TerminalDto terminalDto) {
 		return sqlSession.selectList("reservation.filterList", terminalDto);
 	}
-
 
 	// 터미널 정보를 중복제거하여 불러오기
 	public List<TerminalDto> selectListTerminal() {
@@ -73,4 +74,13 @@ public class ReservationDao {
 		return sqlSession.delete("reservation.delete", ReservationNo) > 0;
 	}
 
+	//월별 통계
+	public List<ReservationDto> selectTimeStatsList() {
+		return sqlSession.selectList("reservation.timeStats");
+	}
+
+	//연도별 통계
+	public List<ReservationDto> selectYearStatsList() {
+		return sqlSession.selectList("reservation.yearStats");
+	}
 }
