@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.lucky.dto.NoticeDto;
 import com.kh.lucky.dto.ReviewDto;
 
 @Repository
@@ -44,7 +45,7 @@ public class ReviewDao {
 	public int count() {
 		return sqlSession.selectOne("review.count");
 	}
-	
+	//더보기 리스트
 	public List<ReviewDto> selectListByPaging(int page, int size) {
 		int beginRow = page * size - (size-1);
 		int endRow = page * size;
@@ -62,6 +63,16 @@ public class ReviewDao {
 	//삭제
 	public boolean delete(int reviewNo) {
 		return sqlSession.delete("review.delete", reviewNo) > 0;
+	}
+	//별점 순서로 조회
+	public List<ReviewDto> selectListStarByPaging(int page, int size) {
+		int beginRow = page * size - (size-1);
+		int endRow = page * size;
+		
+		Map<String, Object> data = new HashMap<>();
+		data.put("beginRow", beginRow);
+		data.put("endRow", endRow);
+		return sqlSession.selectList("review.listByStarPaging");
 	}
 	
 }
