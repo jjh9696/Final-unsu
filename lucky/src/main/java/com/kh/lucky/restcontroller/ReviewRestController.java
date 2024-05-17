@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.lucky.dao.ReviewDao;
 import com.kh.lucky.dao.ReviewLikeDao;
+import com.kh.lucky.dto.NoticeDto;
 import com.kh.lucky.dto.ReviewDto;
 import com.kh.lucky.service.JwtService;
 import com.kh.lucky.vo.LikeVO;
 import com.kh.lucky.vo.ReviewDataVO;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,6 +39,7 @@ public class ReviewRestController {
 	private ReviewDao reviewDao;
 	@Autowired
     private JwtService jwtService;
+	@Autowired
 	private ReviewLikeDao reviewLikeDao;
 	
 	//등록
@@ -131,16 +134,34 @@ public class ReviewRestController {
                                   .build();
             reviewDto.setLikeVO(likeVO);
 	    }
-	    
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping("/page/{page}/size/{size}")
-	public ReviewDataVO list(@PathVariable int page, @PathVariable int size) {
+	public ReviewDataVO list(
+			@PathVariable int page, 
+			@PathVariable int size,
+			@RequestHeader(name = "Authorization",required = false) String token) {
 		List<ReviewDto> list = reviewDao.selectListByPaging(page, size);
 		int count = reviewDao.count();
 		int endRow = page * size;
 		boolean last = endRow >= count;
+		
+	    for (ReviewDto reviewDto : list) {
+	    	// 사용자 아이디 추출
+	    	String memberId = token == null ? "" : jwtService.parse(token).getMemberId();
+	        
+	    	int reviewNo = reviewDto.getReviewNo();
+	        boolean liked = reviewLikeDao.check(memberId, reviewNo);
+	        int likeCount = reviewLikeDao.count(reviewNo);
+	        
+	        // reviewDto에 LikeVO 추가
+	        LikeVO likeVO = LikeVO.builder()
+	                              .state(liked)
+	                              .count(likeCount)
+	                              .build();
+	        reviewDto.setLikeVO(likeVO);
+	    }
 		
 		return ReviewDataVO.builder()
 					.list(list)//화면에 표시할 목록
@@ -210,7 +231,60 @@ public class ReviewRestController {
 	    int count = reviewDao.count();
 	    return ResponseEntity.ok().body(count);
 	}
+	
+	//별점 순서로 조회
+	@Operation(
+		description = "별점순서로 이용후기 목록 조회",
+		responses = {
+			@ApiResponse(responseCode = "200",description = "조회 완료",
+				content = @Content(
+						mediaType = "application/json",
+						array = @ArraySchema(schema = @Schema(implementation = ReviewDto.class))
+				)
+			),
+			@ApiResponse(responseCode = "500",description = "서버 오류",
+				content = @Content(
+						mediaType = "text/plain",
+						schema = @Schema(implementation = String.class), 
+						examples = @ExampleObject("server error")
+				)
+			),
+		}
+	)
 
+	@GetMapping("/starPage/{page}/starSize/{size}")
+	public ReviewDataVO starList(
+			@PathVariable int page, 
+			@PathVariable int size,
+			@RequestHeader(name = "Authorization",required = false) String token) {
+		List<ReviewDto> list = reviewDao.selectListStarByPaging(page, size);
+		int count = reviewDao.count();
+		int endRow = page * size;
+		boolean last = endRow >= count;
+		
+	    for (ReviewDto reviewDto : list) {
+	    	// 사용자 아이디 추출
+	    	String memberId = token == null ? "" : jwtService.parse(token).getMemberId();
+	        
+	    	int reviewNo = reviewDto.getReviewNo();
+	        boolean liked = reviewLikeDao.check(memberId, reviewNo);
+	        int likeCount = reviewLikeDao.count(reviewNo);
+	        
+	        // reviewDto에 LikeVO 추가
+	        LikeVO likeVO = LikeVO.builder()
+	                              .state(liked)
+	                              .count(likeCount)
+	                              .build();
+	        reviewDto.setLikeVO(likeVO);
+	    }
+		
+		return ReviewDataVO.builder()
+					.list(list)//화면에 표시할 목록
+					.count(count)//총 데이터 개수
+					.last(last)//마지막 여부
+				.build();
+	}
+	
 }
 
 

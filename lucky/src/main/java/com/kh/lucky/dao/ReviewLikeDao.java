@@ -59,7 +59,8 @@ public class ReviewLikeDao {
             // 이미 좋아요를 눌렀다면 좋아요 취소
             delete(memberId, reviewNo);
             return false; // 좋아요 취소됨
-        } else {
+        }
+        else {
             // 좋아요를 누르지 않았다면 좋아요 등록
             insert(memberId, reviewNo);
             return true; // 좋아요 등록됨

@@ -76,8 +76,12 @@
 		where review_no = #{reviewNo}
 	</update>
 	
-	
-	
+	<!-- 별점순 조회 -->	
+	<select id="listByStarPaging" resultType="ReviewDto">
+		<include refid="top-n-header"></include>
+		select * from review order by review_star desc, review_wtime desc
+		<include refid="top-n-footer"></include>
+	</select>
 	
 </mapper>
 

@@ -1,6 +1,7 @@
 package com.kh.lucky.restcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,23 +55,33 @@ public class ReviewLikeRestController {
 	)
     //좋아요 토글
     @PostMapping("/like/{reviewNo}")
-    public ResponseEntity<LikeVO> toggleLike(@PathVariable int reviewNo,
-                                             @RequestHeader("Authorization") String token) {
-        //현재 로그인 아이디 추출
-        String memberId = jwtService.parse(token).getMemberId();
-
-        //좋아요 토글
-        boolean liked = reviewLikeDao.toggle(memberId, reviewNo);
-
-        //좋아요 개수 조회
-        int likeCount = reviewLikeDao.count(reviewNo);
-
-        //좋아요 상태와 개수를 LikeVO에 담아서 반환
-        LikeVO likeVO = LikeVO.builder()
-                                .state(liked)
-                                .count(likeCount)
-                                .build();
-
-        return ResponseEntity.ok().body(likeVO);
-    }}
+    public ResponseEntity<?> toggleLike(@PathVariable int reviewNo,
+            @RequestHeader(name = "Authorization", required = false) String token) {
+		if (token == null || token.isEmpty()) {
+		// 토큰이 없을 경우 401 Unauthorized 반환
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+		}
+		
+		try {
+		// 현재 로그인 아이디 추출
+		String memberId = jwtService.parse(token).getMemberId();
+		
+		// 좋아요 토글
+		boolean liked = reviewLikeDao.toggle(memberId, reviewNo);
+		
+		// 좋아요 개수 조회
+		int likeCount = reviewLikeDao.count(reviewNo);
+		
+		// 좋아요 상태와 개수를 LikeVO에 담아서 반환
+		LikeVO likeVO = LikeVO.builder()
+		      .state(liked)
+		      .count(likeCount)
+		      .build();
+		
+		return ResponseEntity.ok().body(likeVO);
+		} catch (Exception e) {
+		// 예외 발생 시 500 에러 반환
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("server error");
+		}
+	}}
 

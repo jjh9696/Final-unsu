@@ -24,14 +24,14 @@
 	</delete>
 	
 	<!-- 여부 확인 -->
-	<select id="check" resultType="LikeVO">
+	<select id="check" resultType="int">
 		select count(*) from review_like
 		where
 		member_id = #{memberId} and review_no = #{reviewNo}
 	</select>
 	
 	<!-- 좋아요 개수 -->
-	<select id="count" resultType="LikeVO">
+	<select id="count" resultType="int">
 		select count(*) from review_like where review_no = #{reviewNo}
 	</select>
 	
