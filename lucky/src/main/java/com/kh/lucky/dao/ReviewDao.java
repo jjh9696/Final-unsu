@@ -22,14 +22,14 @@ public class ReviewDao {
 	//등록
 	public void insert(ReviewDto reviewDto) {
 		//데이터 확인
-	    System.out.println("서버에서 나오는지?");
-	    System.out.println("DAOReview No: " + reviewDto.getReviewNo());
-	    System.out.println("DAOReview Title: " + reviewDto.getReviewTitle());
-	    System.out.println("DAOReview Content: " + reviewDto.getReviewContent());
-	    System.out.println("DAOReview Star: " + reviewDto.getReviewStar());
-	    System.out.println("DAOReview Writer: " + reviewDto.getReviewWriter());
-	    System.out.println("DAOReview ViewCount: " + reviewDto.getReviewViewCount());
-	    System.out.println("DAOReview Wtime: " + reviewDto.getReviewWtime());
+//	    System.out.println("서버에서 나오는지?");
+//	    System.out.println("DAOReview No: " + reviewDto.getReviewNo());
+//	    System.out.println("DAOReview Title: " + reviewDto.getReviewTitle());
+//	    System.out.println("DAOReview Content: " + reviewDto.getReviewContent());
+//	    System.out.println("DAOReview Star: " + reviewDto.getReviewStar());
+//	    System.out.println("DAOReview Writer: " + reviewDto.getReviewWriter());
+//	    System.out.println("DAOReview ViewCount: " + reviewDto.getReviewViewCount());
+//	    System.out.println("DAOReview Wtime: " + reviewDto.getReviewWtime());
 		sqlSession.insert("review.save", reviewDto);
 	}
 	//선택 조회
