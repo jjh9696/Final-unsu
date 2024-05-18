@@ -26,6 +26,10 @@
 		select * from payment where payment_no = #{paymentNo}
 	</select>
 	
+	<select id="findByMemberId" resultType="PaymentDto">
+		select * from payment where member_id = #{memberId}
+	</select>
+	
 	
 	<delete id="delete">
 		delete payment where payment_no = #{paymentNo}

@@ -27,8 +27,7 @@
 		    	r.route_start = #{routeStart}
 		   		AND
 		    	r.route_end = #{routeEnd}
-		    	AND 
-  				r.ROUTE_START_TIME >= TO_DATE(#{routeStartTime}, 'YYYY-MM-DD HH24:MI')	
+  				AND TRUNC(r.ROUTE_START_TIME) = TO_DATE(#{routeStartTime}, 'YYYY-MM-DD HH24:MI')	
 		   		<if test="gradeType != null">AND b.grade_type = #{gradeType} </if>
 		    </where>
 	</select>

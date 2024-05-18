@@ -45,7 +45,7 @@ public class chargeRestController {
 	@PostMapping("/calculateFare")
 	public ResponseEntity<Integer> calculateFare(@RequestBody RequestChargeVO requestChargeVO) {
 	    int total = fareService.gradeTypeFare(requestChargeVO.getChargeType(), requestChargeVO.getRouteNo(), requestChargeVO.getCount());
-	    System.out.println("토탈은?"+total);
+//	    System.out.println("토탈은?"+total);
 	    return ResponseEntity.ok(total);
 	}
 

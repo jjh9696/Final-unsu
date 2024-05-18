@@ -115,14 +115,14 @@ public class FareService {
 //       boolean isOrder = "결제대기".equals(pointDto.getPointState());
 //       if (isOrder) {
 		String memberId = pointDto.getMemberId();
-		System.out.println("잉?1 : " + memberId);
+//		System.out.println("잉?1 : " + memberId);
 		MemberDto memberDto = memberDao.selectId(memberId);
-		System.out.println("잉?2 : " + memberDto);
+//		System.out.println("잉?2 : " + memberDto);
 		// 포인트 금액만큼 회원 포인트 업데이트
 		int totalPoint = memberDto.getMemberPoint() + pointDto.getPointAmount();
-		System.out.println("잉?3 : " + totalPoint);
+//		System.out.println("잉?3 : " + totalPoint);
 		memberDto.setMemberPoint(totalPoint);
-		System.out.println("잉?4 : " + memberDto);
+//		System.out.println("잉?4 : " + memberDto);
 
 		memberDao.memberPoint(totalPoint, memberId);
 //           memberDto.setMemberPoint(totalPoint);

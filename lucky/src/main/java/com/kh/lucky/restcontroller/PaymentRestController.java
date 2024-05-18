@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.lucky.dao.PaymentDao;
 import com.kh.lucky.dto.PaymentDto;
 import com.kh.lucky.service.JwtService;
+import com.kh.lucky.vo.MemberLoginVO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -50,22 +51,23 @@ public class PaymentRestController {
 	}
 	
 	//삭제
-	@DeleteMapping("/{paymentNo}")
-	public ResponseEntity<?> delete(@PathVariable int paymentNo){
-		PaymentDto paymentDto = paymentDao.selectOne(paymentNo); //dao안에있는 driverNo 정보를 꺼내나?
-		boolean result = paymentDao.delete(paymentNo); //결과는 driverNo 삭제
-		if(result == false) { //결과가 실패라면 
-			return ResponseEntity.notFound().build(); //오류
-		} 
-		return ResponseEntity.ok().body(paymentDto); //성공이면 dto 지우기
-	}
+//	@DeleteMapping("/{paymentNo}")
+//	public ResponseEntity<?> delete(@PathVariable int paymentNo){
+//		PaymentDto paymentDto = paymentDao.selectOne(paymentNo); //dao안에있는 driverNo 정보를 꺼내나?
+//		boolean result = paymentDao.delete(paymentNo); //결과는 driverNo 삭제
+//		if(result == false) { //결과가 실패라면 
+//			return ResponseEntity.notFound().build(); //오류
+//		} 
+//		return ResponseEntity.ok().body(paymentDto); //성공이면 dto 지우기
+//	}
 	//상세
-	@GetMapping("/{paymentNo}")
-	public ResponseEntity<PaymentDto> find(@PathVariable int paymentNo){
-		PaymentDto paymentDto = paymentDao.selectOne(paymentNo);
-		if(paymentDto == null) {
-			return ResponseEntity.notFound().build();
-		}
-		return ResponseEntity.ok().body(paymentDto);
-	}
+	 @GetMapping("/list")
+	    public ResponseEntity<List<PaymentDto>> find(@RequestHeader("Authorization") String token) {
+	        MemberLoginVO loginVO = jwtService.parse(token);
+	        List<PaymentDto> payments = paymentDao.selectByMemberId(loginVO.getMemberId());
+	        if (payments == null || payments.isEmpty()) {
+	            return ResponseEntity.notFound().build();
+	        }
+	        return ResponseEntity.ok().body(payments);
+	    }
 }
