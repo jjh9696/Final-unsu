@@ -186,21 +186,14 @@ public class MemberRestcontroller {
 	
 	//검색 조회
 	@GetMapping("/search/column/{column}/keyword/{keyword}")
-	public MemberDto searchList(
+	public List<MemberDto> searchList(
 	        @PathVariable String column,
 	        @PathVariable String keyword
 	    ) {
 	    
 	    List<MemberDto> list = memberDao.searchList(column, keyword);
 
-	    // 리스트가 비어있지 않은지 체크
-	    if (!list.isEmpty()) {
-	        // 리스트의 첫 번째 항목을 반환
-	        return list.get(0);
-	    } else {
-	        // 리스트가 비어있다면 null 반환 또는 다른 처리를 수행할 수 있음
-	        return null;
-	    }
+	    return list;
 	}
 
 
