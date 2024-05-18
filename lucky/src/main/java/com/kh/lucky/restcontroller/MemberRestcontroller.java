@@ -13,17 +13,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.lucky.dao.MemberDao;
 import com.kh.lucky.dao.PaymentDao;
 import com.kh.lucky.dao.PointDao;
 import com.kh.lucky.dto.MemberDto;
+import com.kh.lucky.dto.NoticeDto;
 import com.kh.lucky.dto.PaymentDto;
 import com.kh.lucky.dto.PointDto;
 import com.kh.lucky.service.FareService;
 import com.kh.lucky.service.JwtService;
 import com.kh.lucky.vo.MemberLoginVO;
+import com.kh.lucky.vo.NoticeDataVO;
+import com.kh.lucky.vo.PageVO;
 import com.kh.lucky.vo.RequestChargeVO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,8 +43,6 @@ public class MemberRestcontroller {
 	private MemberDao memberDao;
 	@Autowired
 	private JwtService jwtService;
-	@Autowired
-	private PointDao pointDao;
 	@Autowired
 	private FareService fareService;
 	@Autowired
@@ -181,4 +183,25 @@ public class MemberRestcontroller {
 	      
 	      return ResponseEntity.ok().body(sequence);
 	}
+	
+	//검색 조회
+	@GetMapping("/search/column/{column}/keyword/{keyword}")
+	public MemberDto searchList(
+	        @PathVariable String column,
+	        @PathVariable String keyword
+	    ) {
+	    
+	    List<MemberDto> list = memberDao.searchList(column, keyword);
+
+	    // 리스트가 비어있지 않은지 체크
+	    if (!list.isEmpty()) {
+	        // 리스트의 첫 번째 항목을 반환
+	        return list.get(0);
+	    } else {
+	        // 리스트가 비어있다면 null 반환 또는 다른 처리를 수행할 수 있음
+	        return null;
+	    }
+	}
+
+
 }
