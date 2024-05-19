@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.lucky.dao.MemberDao;
 import com.kh.lucky.dao.PaymentDao;
 import com.kh.lucky.dao.PointDao;
+import com.kh.lucky.dto.DriverDto;
 import com.kh.lucky.dto.MemberDto;
 import com.kh.lucky.dto.NoticeDto;
 import com.kh.lucky.dto.PaymentDto;
@@ -136,6 +139,29 @@ public class MemberRestcontroller {
 		return memberDao.selectOne(memberId);
 	}
 
+	//삭제
+	@DeleteMapping("/{memberId}")
+	public ResponseEntity<?> delete(@PathVariable String memberId, @RequestParam String providedPw) {
+	    MemberDto memberDto = memberDao.selectOne(memberId);
+	    if (memberDto == null) {
+	        return ResponseEntity.notFound().build(); // Member not found
+	    }
+	    
+	    // Provided password is compared to the stored password
+	    boolean isValid = memberDto.getMemberPw().equals(providedPw);
+	    if (!isValid) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다"); // Unauthorized if passwords do not match
+	    }
+	    
+	    boolean result = memberDao.delete(memberId);
+	    if (!result) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 실패"); // Deletion failed
+	    }
+	    
+	    return ResponseEntity.ok().body(memberDto); // Deletion succeeded
+	}
+
+	
 	// 포인트 증가
 	@GetMapping("/points/{pointNo}")
 	public ResponseEntity<?> updateMemberPoints(@PathVariable int pointNo) {

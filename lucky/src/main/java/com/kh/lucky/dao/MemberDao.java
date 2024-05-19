@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.lucky.dto.MemberDto;
-import com.kh.lucky.dto.NoticeDto;
 import com.kh.lucky.vo.RequestChargeVO;
 
 @Repository
@@ -70,4 +69,8 @@ public class MemberDao {
 		data.put("keyword", keyword);
 		return sqlSession.selectList("member.searchList", data);
 	}
+	//삭제
+		public boolean delete(String memberId) {
+			return sqlSession.delete("member.delete",memberId) > 0;
+		}
 }
