@@ -61,6 +61,10 @@
 		member_id = #{memberId}
 	</select>
 
+	<delete id="delete">
+		delete member where member_id = #{memberId}
+	</delete>
+
 	<!-- 회원 검색 해보기 -->
 	<select id="searchList" resultType="MemberDto">
 		SELECT * FROM member
