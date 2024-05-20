@@ -27,7 +27,7 @@
 	</select>
 	
 	<select id="findByMemberId" resultType="PaymentDto">
-		select * from payment where member_id = #{memberId}
+		select * from payment where member_id = #{memberId} order by payment_date desc
 	</select>
 	
 	
