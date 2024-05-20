@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.lucky.dto.DriverDto;
 import com.kh.lucky.dto.MemberDto;
 import com.kh.lucky.vo.RequestChargeVO;
 
@@ -68,6 +69,13 @@ public class MemberDao {
 		data.put("column", column);
 		data.put("keyword", keyword);
 		return sqlSession.selectList("member.searchList", data);
+	}
+	//일부수정
+	public boolean edit(MemberDto memberDto) {
+		return sqlSession.update("member.edit",memberDto) > 0;
+	}
+	public boolean updatePassword(MemberDto memberDto) {
+	    return sqlSession.update("member.pw", memberDto) > 0;
 	}
 	//삭제
 		public boolean delete(String memberId) {

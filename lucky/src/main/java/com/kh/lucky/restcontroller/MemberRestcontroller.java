@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,7 @@ import com.kh.lucky.service.JwtService;
 import com.kh.lucky.vo.MemberLoginVO;
 import com.kh.lucky.vo.NoticeDataVO;
 import com.kh.lucky.vo.PageVO;
+import com.kh.lucky.vo.PasswordChangeVO;
 import com.kh.lucky.vo.RequestChargeVO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -222,5 +224,38 @@ public class MemberRestcontroller {
 	    return list;
 	}
 
+	//일부수정
+	@PatchMapping("/")
+	public ResponseEntity<?> edit(@RequestBody MemberDto memberDto ){
+		boolean result = memberDao.edit(memberDto);
+		if(result == false) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().build();
+	}
+	//비번수정
+	@PatchMapping("/pw")
+	public ResponseEntity<?> changePassword(@RequestBody PasswordChangeVO request) {
+	    MemberDto member = memberDao.selectOne(request.getMemberId());
+	    if (member == null) {
+	        return ResponseEntity.notFound().build();
+	    }
+	    
+	    // 현재 비밀번호가 일치하는지 확인
+	    if (!member.getMemberPw().equals(request.getCurrentPassword())) {
+	        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("현재 비밀번호가 일치하지 않습니다.");
+	    }
+
+	    // 새 비밀번호로 업데이트
+	    member.setMemberPw(request.getNewPassword());
+	    boolean result = memberDao.updatePassword(member);
+
+	    if (!result) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비밀번호 변경에 실패했습니다.");
+	    }
+
+	    return ResponseEntity.ok().build();
+	}
+	
 
 }

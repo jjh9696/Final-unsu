@@ -75,5 +75,34 @@
 		</where>
 		ORDER BY member_join_date ASC
 	</select>
+	
+	<update id="edit">
+    update member
+    <set>
+        <if test="memberPhone != null">
+            member_phone = #{memberPhone,jdbcType=VARCHAR},
+        </if>
+        <if test="memberZip != null">
+            member_zip = #{memberZip,jdbcType=VARCHAR},
+        </if>
+        <if test="memberAddr1 != null">
+            member_addr1 = #{memberAddr1,jdbcType=VARCHAR},
+        </if>
+        <if test="memberAddr2 != null">
+            member_addr2 = #{memberAddr2,jdbcType=VARCHAR},
+        </if>
+        <if test="memberServiceAgree != null">
+            member_service_agree = #{memberServiceAgree,jdbcType=VARCHAR},
+        </if>
+    </set>
+    where member_id = #{memberId,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="pw">
+    update member 
+    set member_pw = #{memberPw} 
+    where member_id = #{memberId}
+</update>
+	
 
 </mapper>
