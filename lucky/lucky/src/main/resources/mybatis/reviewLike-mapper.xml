@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="reviewLike">
+	
+	<!-- 등록 -->	
+	<insert id="save">
+		insert into review_like(
+			member_id, review_no
+		)
+		values(
+			#{memberId}, #{reviewNo}
+		)
+	</insert>
+	
+	<!-- 취소 -->
+	<delete id="delete">
+		delete review_like 
+		where 
+		member_id = #{memberId} and review_no = #{reviewNo}
+	</delete>
+	
+	<!-- 여부 확인 -->
+	<select id="check" resultType="int">
+		select count(*) from review_like
+		where
+		member_id = #{memberId} and review_no = #{reviewNo}
+	</select>
+	
+	<!-- 좋아요 개수 -->
+	<select id="count" resultType="int">
+		select count(*) from review_like where review_no = #{reviewNo}
+	</select>
+	
+</mapper>
+
+
+
+
+

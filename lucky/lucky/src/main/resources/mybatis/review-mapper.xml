@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="review">
+	
+	<!-- 등록 -->
+	<!-- 시퀀스 생성 -->
+	<select id="sequence" resultType="int">
+		select review_seq.nextval from dual
+	</select>
+	
+	<insert id="save">
+		insert into review(
+			review_no, review_title, review_content, 
+			review_wtime, review_writer, review_view_count,
+			review_star
+		)
+		values(
+			#{reviewNo}, #{reviewTitle}, #{reviewContent},
+			sysdate, #{reviewWriter}, #{reviewViewCount},
+			#{reviewStar}
+		)
+	</insert>
+	
+	<!-- 목록 최신 작성부터 정렬-->
+	<select id="list" resultType="ReviewDto">
+		select * from review order by review_wtime desc
+	</select>
+	
+	<!-- 키워드 검색 -->
+	<select id="find" resultType="ReviewDto">
+		select * from review where review_no = #{reviewNo}
+	</select>
+	
+	<!-- 무한스크롤 -->
+	<select id="listByPaging" resultType="ReviewDto">
+		<include refid="top-n-header"></include>
+		select * from review order by review_wtime desc
+		<include refid="top-n-footer"></include>
+	</select>
+	
+	<!-- 삭제 -->
+	<delete id="delete">
+		delete review where review_no = #{reviewNo}
+	</delete>
+	
+	<!-- 상단 -->
+	<sql id="top-n-header">
+	    <if test="beginRow != null and endRow != null">
+	    select * from (
+	        select rownum rn, TMP.* from (
+	    </if>
+	</sql>
+	
+	<!-- Top N Query 적용 -->
+	<!-- 하단 -->
+	<sql id="top-n-footer">
+	    <if test="beginRow != null and endRow != null">
+	        )TMP
+	    ) where rn between #{beginRow} and #{endRow}
+	    </if>
+	</sql>	
+	
+	<!-- 후기 총 개수 -->
+	<select id="count" resultType="int">
+		select count(*) from review
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="updateReviewViewCount" parameterType="int">
+		update review
+		set review_view_count = review_view_count + 1
+		where review_no = #{reviewNo}
+	</update>
+	
+	<!-- 별점순 조회 -->	
+	<select id="listByStarPaging" resultType="ReviewDto">
+		<include refid="top-n-header"></include>
+		select * from review order by review_star desc, review_wtime desc
+		<include refid="top-n-footer"></include>
+	</select>
+	
+</mapper>
+
+
+
+
+

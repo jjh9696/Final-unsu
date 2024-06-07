@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+ 
+    
+<mapper namespace="charge">
+	
+	<select id="sequence" resultType="int">
+		select charge_seq.nextval from dual
+	</select>
+		
+	<select id="list" resultType="ChargeDto">
+		select * from charge order by charge_no asc
+	</select>
+	
+	<select id="find" resultType="ChargeDto">
+		select * from charge where charge_no = #{chargeNo}
+	</select>
+	<select id="findByAge" resultType="ChargeDto">
+		select * from charge where charge_type = #{chargeType}
+	</select>
+	
+	<insert id="add">
+		insert into charge(
+			charge_no, charge_type, charge_passenger,
+			grade_type, charge_price
+		)
+		values(
+			#{chargeNo}, #{chargeType}, #{chargePassenger},
+			#{gradeType}, #{chargePrice}
+		)
+	</insert>
+	
+	<update id="editAll">
+		update charge set
+			charge_type = #{chargeType},
+			charge_passenger = #{chargePassenger},
+			grade_type = #{gradeType},
+			bus_no = #{busNo},
+			charge_price = #{chargePrice}
+		where charge_no = #{chargeNo}
+	</update>
+	
+	<update id="edit">
+		update charge
+		<set>
+			<if test="chargeType != null">charge_type = #{chargeType},</if>
+			<if test="chargePassenger > 0">charge_passenger = #{chargePassenger},</if>
+			<if test="gradeType != null">grade_type = #{gradeType},</if>
+			<if test="chargePrice > 0">charge_price = #{chargePrice}</if>
+		</set>
+		where charge_no = #{chargeNo}
+	</update>
+	
+	<delete id="delete">
+		delete charge where charge_no = #{chargeNo}
+	</delete>
+	
+</mapper>

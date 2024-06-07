@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="notice">
+	
+	<!-- 등록 -->
+	<!-- 시퀀스 생성 -->
+	<select id="sequence" resultType="int">
+		select notice_seq.nextval from dual
+	</select>
+	
+	<insert id="save">
+		insert into notice(
+			NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, 
+			NOTICE_WDATE, NOTICE_VIEW_COUNT
+		)
+		values(
+			#{noticeNo}, #{noticeTitle}, #{noticeContent},
+			sysdate, #{noticeViewCount}
+		)
+	</insert>
+	
+	<!-- 목록 최신 작성부터 정렬-->
+	<select id="list" resultType="NoticeDto">
+		select * from notice order by notice_wdate DESC
+	</select>
+	
+	<!-- 키워드 검색 -->
+	<select id="find" resultType="NoticeDto">
+		select * from notice where notice_no = #{noticeNo}
+	</select>
+	
+	<!-- 수정 -->
+	<update id="edit">
+		update notice
+		<set>
+			<if test="noticeTitle != null">
+				notice_title = #{noticeTitle},
+			</if>
+			<if test="noticeContent != null">
+				notice_content = #{noticeContent},
+			</if>
+			<if test="noticeViewCount != null">
+				notice_view_count = #{noticeViewCount},
+			</if>
+			 notice_wdate = sysdate,
+		</set>
+		where notice_no = #{noticeNo}
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="delete">
+		delete notice where notice_no = #{noticeNo}
+	</delete>
+	
+	<!-- 조회수 증가 -->
+	 <update id="updateNoticeViewCount" parameterType="int">
+		update notice
+	    set notice_view_count = notice_view_count + 1
+	    where notice_no = #{noticeNo}	 
+	 </update>
+	 
+	 <!-- 조회수 조회 -->
+	 <select id="selectByViewCount" resultType="NoticeDto">
+	    select * from notice order by notice_view_count DESC
+	</select>
+	
+	 <!-- 검색 조회 -->
+ 	<select id="searchList" resultType="NoticeDto">
+	    select notice_no, notice_title, notice_content,
+	           notice_wdate, notice_view_count
+	    from notice
+	    where instr(${column}, #{keyword}) > 0
+	    order by notice_wdate DESC
+	</select>
+	
+<!-- 	 <select id="searchList" resultType="NoticeDto"> -->
+<!--         SELECT notice_no, notice_title, notice_content, -->
+<!-- 	           notice_wtime, notice_view_count -->
+<!--         FROM notice -->
+<!--         WHERE ${column} LIKE CONCAT('%', #{keyword}, '%') -->
+<!--         ORDER BY ${column} ASC, notice_wdate desc -->
+<!--     </select> -->
+	
+	<!-- 최신순 페이지네이션 + 무한스크롤 -->
+	<select id="listByPaging" resultType="NoticeDto">
+		<include refid="top-n-header"></include>
+		select * from notice order by notice_wdate desc
+		<include refid="top-n-footer"></include>
+	</select>
+	
+	<!-- 조회순 페이지 네이션 + 무한스크롤 -->
+	<select id="listViewByPaging" resultType="NoticeDto">
+		<include refid="top-n-header"></include>
+		select * from notice order by notice_view_count desc
+		<include refid="top-n-footer"></include>
+	</select>
+	
+	<!-- 검색 페이징 -->
+	<select id="searchListByPaging" resultType="NoticeDto">
+		<include refid="top-n-header"></include>
+            select * from notice
+            where instr(${column}, #{keyword}) > 0
+            order by notice.notice_wdate desc
+		<include refid="top-n-footer"></include>
+	</select>
+	
+	<!-- 전체 목록 개수 -->
+	<select id="count" resultType="int">
+		select count(*) from notice
+	</select>
+	
+	<!-- 검색 결과 목록 개수 -->
+	<select id="searchByCount" resultType="int">
+		select count(*) from notice
+		where instr(${column}, #{keyword}) > 0
+	</select>
+	
+	<!-- 상단 -->
+	<sql id="top-n-header">
+	    <if test="beginRow != null and endRow != null">
+	    	select * from (
+	        	select rownum rn, TMP.* from (
+	    </if>
+	</sql>
+	<!-- 하단 -->
+	<sql id="top-n-footer">
+	    <if test="beginRow != null and endRow != null">
+		        )TMP
+		    ) where rn between #{beginRow} and #{endRow}
+	    </if>
+	</sql>
+	
+	<!-- 검색 페이징 -->
+	<!-- <select id="searchListByPaging" resultType="NoticeDto">
+		<![CDATA[
+        SELECT * FROM (
+            SELECT ROWNUM AS rn, B.* FROM (
+                SELECT 
+                    notice_no, notice_title, notice_content,
+                    notice_wdate, notice_view_count
+                FROM notice
+                WHERE instr(${column}, #{keyword}) > 0
+                ORDER BY notice_no DESC
+            ) B
+            WHERE ROWNUM <= #{endRow}
+        ) WHERE rn >= #{beginRow}
+        ]]>
+	</select> -->	
+</mapper>
+
+
+
+
+

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="reservation">
+    
+    <select id="sequence" resultType="int">
+    select reservation_seq.nextval from dual
+    </select>
+    
+    <insert id="insert">
+    insert into reservation(
+    	reservation_no, reservation_date, reservation_time, 
+    	member_id , grade_type , route_no , bus_no , seat_no
+    )
+    values(
+     #{reservationNo},#{reservationDate},#{reservationTime},
+     #{memberId}, #{gradeType} , #{routeNo} , #{busNo}, #{seatNo}
+    )
+    </insert>
+    
+    <insert id="save">
+     INSERT INTO reservation 
+     (reservation_no,  member_id, 
+     grade_type, route_no, bus_no, seat_no, reservation_count, reservation_type)
+     VALUES 
+    (#{reservationNo}, 
+     #{memberId}, #{gradeType}, #{routeNo}, #{busNo}, #{seatNo}, #{reservationCount}, #{reservationType})
+    </insert>
+    
+    <select id="find" resultType="ReservationDto">
+    	select * from reservation where reservation_no =#{ReservationNo}
+    </select>
+    
+    <update id="editAll">
+    	update reservation set
+    	reservation_date =#{reservationDate},
+    	reservation_time =#{reservationTime},
+    	member_id =#{memberId},
+    	grade_type =#{gradeType},
+    	route_no =#{routeNo}
+    	bus_no =#{busNo},
+    	seat_no =#{seatNo}
+    	where reservation_no =#{reservationNo}
+    </update>
+    
+    <update id="edit">
+    	update reservation
+    	<set>
+    		<if test="reservationNo != null">reservation_no = #{reservationNo},</if>
+    		<if test="reservationDate != null">reservation_date = #{reservationDate},</if>
+    		<if test="reservationTime != null">reservation_time = #{reservationTime},</if>
+    		<if test="memberId != null">member_id = #{memberId},</if>
+    		<if test="gradeType != null">gradeType = #{gradeType},</if>
+    		<if test="routeNo != null">routeNo = #{routeNo},</if>
+    		<if test="busNo != null">busNo = #{busNo},</if>
+    		<if test="seatNo != null">seatNo = #{seatNo}</if>
+    	</set>
+    	where reservationNo = #{reservationNo}
+    </update>
+    
+    <delete id="delete">
+		delete reservation where reservation_no = #{reservationNo}
+	</delete>
+	
+	<select id="list" resultType="TerminalDto">
+		  SELECT * FROM TERMINAL WHERE TERMINAL_REGION LIKE 
+		  '%' || #{terminalRegion} || '%'
+	</select>
+	
+	<select id="filterList" resultType="FilterTerminalVO">
+		SELECT distinct end_terminal.TERMINAL_ID, end_terminal.TERMINAL_NAME , END_TERMINAL.TERMINAL_REGION 
+			FROM TERMINAL start_terminal
+			JOIN route ON route.ROUTE_START = start_terminal.TERMINAL_ID
+			JOIN TERMINAL end_terminal ON end_terminal.TERMINAL_ID = route.ROUTE_END
+			WHERE start_terminal.TERMINAL_ID LIKE #{terminalId} and END_TERMINAL.TERMINAL_REGION = #{terminalRegion}
+			AND route.ROUTE_END IS NOT NULL
+	</select>
+	
+	<select id="terminalList" resultType="TerminalDto">
+		SELECT DISTINCT TERMINAL_REGION FROM terminal order by TERMINAL_REGION asc
+	</select>
+    
+    <!-- 월별 데이터 YYYY-MM -->
+    <select id="timeStats" resultType="ReservationDto">
+    	SELECT TO_CHAR(RESERVATION_TIME, 'YYYY-MM') AS RESERVATION_time, COUNT(*) AS RESERVATION_COUNT
+		FROM RESERVATION
+		GROUP BY TO_CHAR(RESERVATION_TIME, 'YYYY-MM')
+    </select>
+    
+    <!-- 연도별 데이터 YYYY -->
+    <select id="yearStats" resultType="ReservationDto">
+    	SELECT TO_CHAR(RESERVATION_TIME, 'YYYY') AS RESERVATION_time, COUNT(*) AS RESERVATION_COUNT
+		FROM RESERVATION
+		GROUP BY TO_CHAR(RESERVATION_TIME, 'YYYY')
+    </select>
+    
+    </mapper>

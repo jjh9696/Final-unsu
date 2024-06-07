@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    
+<mapper namespace="terminal">
+	
+	<select id="sequence" resultType="int">
+		select terminal_seq.nextval from dual
+	</select>
+	
+	<insert id="insert">
+		insert into terminal(
+			terminal_id, terminal_name, terminal_region
+		)
+		values(
+			#{terminalId}, #{terminalName}, #{terminalRegion}
+		)
+	</insert>
+	
+	<select id="list" resultType="TerminalDto">
+		select * from terminal order by terminal_id asc
+	</select>
+	
+	<select id="find" resultType="TerminalDto">
+		select * from terminal where terminal_id = #{terminalId}
+	</select>
+	
+	<update id="editAll">
+		update terminal set
+			terminal_name = #{terminalName},
+			terminal_region = #{terminalRegion}
+		where terminal_id = #{terminalId}
+	</update>
+	
+	<update id="edit">
+		update terminal
+		<set>
+			<if test="terminalName != null">terminal_name = #{terminalName},</if>
+			<if test="terminalRegion != null">terminal_region = #{terminalRegion}</if>
+		</set>
+		where terminal_id = #{terminalId}
+	</update>
+	
+	<delete id="delete">
+		delete terminal where terminal_id = #{terminalId}
+	</delete>
+	
+	<!-- 아이디를 받아서 터미널 이름 뽑아오기 -->
+	<select id="findTerminalName" resultType="terminalDto">
+        SELECT terminal_name, terminal_region 
+        FROM terminal
+        WHERE terminal_id = #{terminalId}
+    </select>
+    
+    
+    
+    <!-- 목록 개수 -->
+	<select id="count" resultType="int">
+		select count(*) from terminal
+	</select>
+	
+	<!-- 검색 페이징 -->
+	<select id="listByPaging" resultType="TerminalDto">
+		<include refid="top-n-header"></include>
+            select * from terminal
+            order by terminal.terminal_id asc
+		<include refid="top-n-footer"></include>
+	</select>
+	
+	<!-- 상단 -->
+	<sql id="top-n-header">
+	    <if test="beginRow != null and endRow != null">
+	    	select * from (
+	        	select rownum rn, TMP.* from (
+	    </if>
+	</sql>
+	<!-- 하단 -->
+	<sql id="top-n-footer">
+	    <if test="beginRow != null and endRow != null">
+		        )TMP
+		    ) where rn between #{beginRow} and #{endRow}
+	    </if>
+	</sql>
+	
+</mapper>

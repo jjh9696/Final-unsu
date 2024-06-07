@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    
+<mapper namespace="driver">
+	
+	<select id="sequence" resultType="int">
+		select driver_seq.nextval from dual
+	</select>
+	
+	<insert id="insert">
+		insert into driver(
+			driver_no, driver_name, driver_contact, driver_age, driver_license, driver_date
+		)
+		values(
+			#{driverNo}, #{driverName}, #{driverContact}, #{driverAge}, #{driverLicense}, #{driverDate}
+		)
+	</insert>
+	
+	<select id="list" resultType="DriverDto">
+		select * from driver order by driver_no asc
+	</select>
+	
+	<select id="find" resultType="DriverDto">
+		select * from driver where driver_no = #{driverNo}
+	</select>
+	
+	<update id="editAll">
+		update driver set
+			driver_name = #{driverName},
+			driver_contact = #{driverContact},
+			driver_age = #{driverAge},
+			driver_license = #{driverLicense},
+			driver_date = #{driverDate}
+		where driver_no = #{driverNo}
+	</update>
+	
+	<update id="edit">
+		update driver
+		<set>
+			<if test="driverName != null">driver_name = #{driverName},</if>
+			<if test="driverContact != null">driver_contact = #{driverContact},</if>
+			<if test="driverAge != null">driver_age = #{driverAge},</if>
+			<if test="driverLicense != null">driver_license = #{driverLicense},</if>
+			<if test="driverDate != null">driver_date = #{driverDate}</if>
+		</set>
+		where driver_no = #{driverNo}
+	</update>
+	
+	<delete id="delete">
+		delete driver where driver_no = #{driverNo}
+	</delete>
+	
+	
+	<!-- 목록 개수 -->
+	<select id="count" resultType="int">
+		select count(*) from terminal
+	</select>
+	
+	<!-- 상단 -->
+	<sql id="top-n-header">
+	    <if test="beginRow != null and endRow != null">
+	    	select * from (
+	        	select rownum rn, TMP.* from (
+	    </if>
+	</sql>
+	<!-- 하단 -->
+	<sql id="top-n-footer">
+	    <if test="beginRow != null and endRow != null">
+		        )TMP
+		    ) where rn between #{beginRow} and #{endRow}
+	    </if>
+	</sql>
+	
+</mapper>

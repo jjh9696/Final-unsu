@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    
+<mapper namespace="point">
+	
+	<select id="sequence" resultType="int">
+		select point_seq.nextval from dual
+	</select>
+	
+	<insert id="add"> 
+		insert into point(
+			point_no, member_id, point_amount
+		)
+		values(
+			#{pointNo}, #{memberId}, #{pointAmount}
+		)
+	</insert>
+	
+	<select id="pointAllList" resultType="pointDto">
+		select * from point order by point_time asc
+	</select>
+	
+	<!-- 상태에 따른 목록 출력 -->
+	<select id="pointStateList" resultType="pointDto">
+		select * from point where point_state = #{pointState} order by point_time asc
+	</select>
+	
+	<!-- 포인트번호로 포인트정보 찾기 -->
+	<select id="find" resultType="pointDto">
+		select * from point where point_no = #{pointNo}
+	</select>
+	
+	<update id="editAll">
+		update point set where point_no = #{pointNo}
+	</update>
+	
+	<update id="edit">
+		update point set point_state = #{pointState}
+		where point_no = #{pointNo}
+	</update>
+	
+</mapper>
